@@ -11,10 +11,10 @@ package com.philips.hsdp.apis.tdr.domain.sdk.query
  */
 data class CountQuery(
     override val value: List<Int>,
-): IntegerQuery {
+) : IntegerQuery {
     override val name = "_count"
 
-    constructor(value: Int): this(listOf(value))
+    constructor(value: Int) : this(listOf(value))
 
     init {
         validate()

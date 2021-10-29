@@ -29,7 +29,7 @@ data class Parameters(
      * List of parameters
      */
     val parameter: List<Parameter>,
-): Resource, Result {
+) : Resource, Result {
     init {
         require(parameter.size in 2..32) {
             "The number of parameter entries should be between 2 and 32"

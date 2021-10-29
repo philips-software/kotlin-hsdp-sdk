@@ -4,8 +4,8 @@
  */
 package com.philips.hsdp.apis.iam.oauth2.domain.conversion
 
-import com.philips.hsdp.apis.iam.oauth2.domain.hsdp.*
-import com.philips.hsdp.apis.iam.oauth2.domain.sdk.*
+import com.philips.hsdp.apis.iam.oauth2.domain.hsdp.TokenResponse
+import com.philips.hsdp.apis.iam.oauth2.domain.sdk.Token
 
 fun TokenResponse.toToken(): Token = Token(
     scopes = scopes,

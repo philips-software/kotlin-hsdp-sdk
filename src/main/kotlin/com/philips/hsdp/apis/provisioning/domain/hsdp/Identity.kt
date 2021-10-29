@@ -29,4 +29,4 @@ data class Identity(
      * frameworks or protocols. In the data store, system and value are concatenated with a pipe '|'.
      */
     val identifier: Identifier,
-): Resource
+) : Resource

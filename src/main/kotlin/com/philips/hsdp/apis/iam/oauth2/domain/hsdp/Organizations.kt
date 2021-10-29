@@ -7,7 +7,7 @@ package com.philips.hsdp.apis.iam.oauth2.domain.hsdp
 import com.philips.hsdp.apis.support.UUIDSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import java.util.*
+import java.util.UUID
 
 /**
  * Organizations for an identity account.

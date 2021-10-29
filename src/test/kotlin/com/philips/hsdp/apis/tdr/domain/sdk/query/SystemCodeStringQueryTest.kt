@@ -16,10 +16,10 @@ class SystemCodeStringQueryTest {
     data class TestQuery(
         override val system: List<String>,
         override val value: List<String>
-    ): SystemCodeStringQuery {
+    ) : SystemCodeStringQuery {
         override val name = "test"
 
-        constructor(system: String, value: String): this(listOf(system), listOf(value))
+        constructor(system: String, value: String) : this(listOf(system), listOf(value))
 
         init {
             validate()

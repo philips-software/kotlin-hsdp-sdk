@@ -7,8 +7,8 @@ package com.philips.hsdp.apis.tdr.domain.sdk
 import com.philips.hsdp.apis.tdr.domain.hsdp.Coding
 import com.philips.hsdp.apis.tdr.domain.hsdp.DeletePolicy
 import com.thinkinglogic.builder.annotation.Builder
-import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonObject
 
 /**
  * Minimalistic representation of a TDR contract that is to be created/stored in TDR.

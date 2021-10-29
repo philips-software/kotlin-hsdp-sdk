@@ -8,7 +8,7 @@ import com.philips.hsdp.apis.iam.oauth2.domain.hsdp.Actor
 import com.philips.hsdp.apis.iam.oauth2.domain.hsdp.Organizations
 import com.philips.hsdp.apis.support.UUIDSerializer
 import kotlinx.serialization.Serializable
-import java.util.*
+import java.util.UUID
 
 @Serializable
 data class TokenMetadata(

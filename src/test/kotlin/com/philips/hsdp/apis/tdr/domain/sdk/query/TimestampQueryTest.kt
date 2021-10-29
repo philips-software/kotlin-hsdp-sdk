@@ -32,10 +32,10 @@ class TimestampQueryTest {
         }
 
         @TestFactory
-        fun `Should throw when supplying a timestamp with space between date and time`()  = listOf(
+        fun `Should throw when supplying a timestamp with space between date and time`() = listOf(
             "2021-07-06 12:13:14.000Z" to "a space between date and time",
             "2021-07-06T12:13:14.000" to "no Z after the time",
-        ).map{ (input, scenario) ->
+        ).map { (input, scenario) ->
             DynamicTest.dynamicTest("Should not throw when supplying a timestamp with $scenario") {
                 val exception = shouldThrow<IllegalArgumentException> {
                     TimestampQuery(input)
@@ -51,9 +51,9 @@ class TimestampQueryTest {
         fun `Should properly convert the query to a QueryParameter for a single value`() {
             TimestampQuery("2021-07-06T12:13:14Z")
                 .asQueryParameter() shouldBe QueryParameter(
-                    name = "timestamp",
-                    value = "2021-07-06T12:13:14Z"
-                )
+                name = "timestamp",
+                value = "2021-07-06T12:13:14Z"
+            )
         }
 
         @Test

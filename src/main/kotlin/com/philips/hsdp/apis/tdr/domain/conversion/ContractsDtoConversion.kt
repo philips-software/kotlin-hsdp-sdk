@@ -6,7 +6,8 @@ package com.philips.hsdp.apis.tdr.domain.conversion
 
 import com.philips.hsdp.apis.tdr.domain.hsdp.Bundle
 import com.philips.hsdp.apis.tdr.domain.hsdp.Contract
-import com.philips.hsdp.apis.tdr.domain.sdk.*
+import com.philips.hsdp.apis.tdr.domain.sdk.ContractsDto
+import com.philips.hsdp.apis.tdr.domain.sdk.PaginationDto
 
 /**
  * Converts a Bundle with BundleEntries containing Contracts returned by the HSDP TDR 'getContracts' endpoint

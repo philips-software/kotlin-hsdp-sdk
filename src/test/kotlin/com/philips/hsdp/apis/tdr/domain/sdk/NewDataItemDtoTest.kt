@@ -97,7 +97,7 @@ internal class NewDataItemDtoTest {
 
         @Test
         fun `Should throw when not supplying neither the data nor the blob field`() {
-            val exception =shouldThrow<IllegalArgumentException> {
+            val exception = shouldThrow<IllegalArgumentException> {
                 NewDataItemDto(
                     timestamp = "2021-08-28T14:15:16.000Z",
                     user = Identifier(

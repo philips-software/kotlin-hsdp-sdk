@@ -15,12 +15,15 @@ internal class ParametersSerializationTest {
         parameter = listOf(
             Parameter(name = "type", valueString = "IoTPRS"),
             Parameter(name = "identityType", valueString = "device"),
-            Parameter(name = "DeviceAttributes", part = listOf(
-                Parameter(name = "materialNumber", valueString = "123456"),
-                Parameter(name = "serialNumber", valueString = "abc1234"),
-                Parameter(name = "nameTag", valueString = "TestHub_2225"),
-                Parameter(name = "parentNameTag", valueString = "PRS_RAM_IoTHub"),
-            )),
+            Parameter(
+                name = "DeviceAttributes",
+                part = listOf(
+                    Parameter(name = "materialNumber", valueString = "123456"),
+                    Parameter(name = "serialNumber", valueString = "abc1234"),
+                    Parameter(name = "nameTag", valueString = "TestHub_2225"),
+                    Parameter(name = "parentNameTag", valueString = "PRS_RAM_IoTHub"),
+                )
+            ),
         )
     )
 
@@ -68,24 +71,32 @@ internal class ParametersSerializationTest {
             Parameter(name = "someBoolean", valueBoolean = true),
             Parameter(name = "someInt", valueInteger = 2),
             Parameter(name = "someCode", valueCode = "xxx|yyy"),
-            Parameter(name = "someIdentifier", valueIdentifier = Identifier(
-                system = "system",
-                value = "value",
-            )),
-            Parameter(name = "someUri", valueUri = "uri"),
-            Parameter(name = "DeviceAttributes", part = listOf(
-                Parameter(name = "materialNumber", valueString = "123456"),
-                Parameter(name = "serialNumber", valueString = "abc1234"),
-                Parameter(name = "nameTag", valueString = "TestHub_2225"),
-                Parameter(name = "parentNameTag", valueString = "PRS_RAM_IoTHub"),
-                Parameter(name = "someLong", valueDecimal = 3L),
-                Parameter(name = "someReference", valueReference = Reference(
-                    reference = "reference",
-                    display = "display",
+            Parameter(
+                name = "someIdentifier",
+                valueIdentifier = Identifier(
+                    system = "system",
+                    value = "value",
                 )
-                ),
-                Parameter(name = "someDateTime", valueDateTime = "2021-09-20T13:14:15.000Z"),
-            )),
+            ),
+            Parameter(name = "someUri", valueUri = "uri"),
+            Parameter(
+                name = "DeviceAttributes",
+                part = listOf(
+                    Parameter(name = "materialNumber", valueString = "123456"),
+                    Parameter(name = "serialNumber", valueString = "abc1234"),
+                    Parameter(name = "nameTag", valueString = "TestHub_2225"),
+                    Parameter(name = "parentNameTag", valueString = "PRS_RAM_IoTHub"),
+                    Parameter(name = "someLong", valueDecimal = 3L),
+                    Parameter(
+                        name = "someReference",
+                        valueReference = Reference(
+                            reference = "reference",
+                            display = "display",
+                        )
+                    ),
+                    Parameter(name = "someDateTime", valueDateTime = "2021-09-20T13:14:15.000Z"),
+                )
+            ),
         )
     )
 

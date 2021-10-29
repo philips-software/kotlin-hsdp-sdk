@@ -4,10 +4,10 @@
  */
 package com.philips.hsdp.apis.tdr.domain.sdk
 
+import com.philips.hsdp.apis.support.ValidationPatterns.iso8601UtcPattern
 import com.philips.hsdp.apis.tdr.domain.hsdp.Blob
 import com.philips.hsdp.apis.tdr.domain.hsdp.Coding
 import com.philips.hsdp.apis.tdr.domain.hsdp.Identifier
-import com.philips.hsdp.apis.support.ValidationPatterns.iso8601UtcPattern
 import com.thinkinglogic.builder.annotation.Builder
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonObject

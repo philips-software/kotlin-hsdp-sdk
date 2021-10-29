@@ -5,7 +5,9 @@
 package com.philips.hsdp.apis.iam.user
 
 import com.philips.hsdp.apis.iam.oauth2.domain.sdk.Token
+/* ktlint-disable no-wildcard-imports */
 import com.philips.hsdp.apis.iam.user.domain.sdk.*
+/* ktlint-enable no-wildcard-imports */
 import com.philips.hsdp.apis.support.HttpClient
 import com.philips.hsdp.apis.support.HttpException
 import com.philips.hsdp.apis.support.TokenRefresher
@@ -28,7 +30,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import java.io.InterruptedIOException
 import java.time.Duration
-import java.util.*
+import java.util.UUID
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 internal class IamUserTest {

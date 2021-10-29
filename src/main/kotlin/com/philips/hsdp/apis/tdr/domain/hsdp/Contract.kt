@@ -68,4 +68,4 @@ data class Contract(
      * This policy specifies when the DataItem needs to be deleted.
      */
     val deletePolicy: DeletePolicy,
-): Resource
+) : Resource

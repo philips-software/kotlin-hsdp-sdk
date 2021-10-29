@@ -28,4 +28,4 @@ data class OperationOutcome(
      * List of issues (error, warning or information message that results from a system action).
      */
     val issue: List<Issue>,
-): Resource, Result
+) : Resource, Result

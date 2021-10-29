@@ -35,7 +35,8 @@ internal class DeviceIdentityConversionKtTest {
                     Parameter(name = "type", valueString = "type"),
                     Parameter(name = "identityType", valueString = "device"),
                     Parameter(
-                        name = "DeviceAttributes", part = listOf(
+                        name = "DeviceAttributes",
+                        part = listOf(
                             Parameter(name = "systemIdentifier", valueString = "systemIdentifier"),
                         )
                     ),
@@ -58,7 +59,8 @@ internal class DeviceIdentityConversionKtTest {
                         Parameter(name = "parentNameTag", valueString = "PRS_RAM_IoTHub"),
                         Parameter(name = "someLong", valueDecimal = 3L),
                         Parameter(
-                            name = "someReference", valueReference = Reference(
+                            name = "someReference",
+                            valueReference = Reference(
                                 reference = "reference",
                                 display = "display",
                             )
@@ -71,7 +73,8 @@ internal class DeviceIdentityConversionKtTest {
                     Parameter(name = "someInt", valueInteger = 2),
                     Parameter(name = "someCode", valueCode = "xxx|yyy"),
                     Parameter(
-                        name = "someIdentifier", valueIdentifier = Identifier(
+                        name = "someIdentifier",
+                        valueIdentifier = Identifier(
                             system = "system",
                             value = "value",
                         )
@@ -85,7 +88,8 @@ internal class DeviceIdentityConversionKtTest {
                     Parameter(name = "type", valueString = "type"),
                     Parameter(name = "identityType", valueString = "device"),
                     Parameter(
-                        name = "DeviceAttributes", part = listOf(
+                        name = "DeviceAttributes",
+                        part = listOf(
                             Parameter(name = "serialNumber", valueString = "serialNumber"),
                             Parameter(name = "materialNumber", valueString = "materialNumber"),
                             Parameter(name = "systemIdentifier", valueString = "systemIdentifier"),
@@ -93,7 +97,8 @@ internal class DeviceIdentityConversionKtTest {
                             Parameter(name = "parentNameTag", valueString = "PRS_RAM_IoTHub"),
                             Parameter(name = "someLong", valueDecimal = 3L),
                             Parameter(
-                                name = "someReference", valueReference = Reference(
+                                name = "someReference",
+                                valueReference = Reference(
                                     reference = "reference",
                                     display = "display",
                                 )
@@ -105,7 +110,8 @@ internal class DeviceIdentityConversionKtTest {
                     Parameter(name = "someInt", valueInteger = 2),
                     Parameter(name = "someCode", valueCode = "xxx|yyy"),
                     Parameter(
-                        name = "someIdentifier", valueIdentifier = Identifier(
+                        name = "someIdentifier",
+                        valueIdentifier = Identifier(
                             system = "system",
                             value = "value",
                         )
@@ -131,9 +137,12 @@ internal class DeviceIdentityConversionKtTest {
                     Parameter(name = "HSDPId", valueString = "HSDPId"),
                     Parameter(name = "OAuthClientId", valueString = "OAuthClientId"),
                     Parameter(name = "OAuthClientSecret", valueString = "OAuthClientSecret"),
-                    Parameter(name = "DeviceAttributes", part = listOf(
-                        Parameter(name = "systemIdentifier", valueString = "systemIdentifier"),
-                    )),
+                    Parameter(
+                        name = "DeviceAttributes",
+                        part = listOf(
+                            Parameter(name = "systemIdentifier", valueString = "systemIdentifier"),
+                        )
+                    ),
                 )
             )
             val expectedDeviceIdentity = DeviceIdentity(
@@ -164,26 +173,31 @@ internal class DeviceIdentityConversionKtTest {
                     Parameter(name = "HSDPId", valueString = "HSDPId"),
                     Parameter(name = "OAuthClientId", valueString = "OAuthClientId"),
                     Parameter(name = "OAuthClientSecret", valueString = "OAuthClientSecret"),
-                    Parameter(name = "DeviceAttributes", part = listOf(
-                        Parameter(name = "serialNumber", valueString = "serialNumber"),
-                        Parameter(name = "materialNumber", valueString = "materialNumber"),
-                        Parameter(name = "systemIdentifier", valueString = "systemIdentifier"),
-                        Parameter(name = "nameTag", valueString = "TestHub_2225"),
-                        Parameter(name = "parentNameTag", valueString = "PRS_RAM_IoTHub"),
-                        Parameter(name = "someLong", valueDecimal = 3L),
-                        Parameter(
-                            name = "someReference", valueReference = Reference(
-                                reference = "reference",
-                                display = "display",
-                            )
-                        ),
-                        Parameter(name = "someDateTime", valueDateTime = "2021-09-20T13:14:15.000Z"),
-                    )),
+                    Parameter(
+                        name = "DeviceAttributes",
+                        part = listOf(
+                            Parameter(name = "serialNumber", valueString = "serialNumber"),
+                            Parameter(name = "materialNumber", valueString = "materialNumber"),
+                            Parameter(name = "systemIdentifier", valueString = "systemIdentifier"),
+                            Parameter(name = "nameTag", valueString = "TestHub_2225"),
+                            Parameter(name = "parentNameTag", valueString = "PRS_RAM_IoTHub"),
+                            Parameter(name = "someLong", valueDecimal = 3L),
+                            Parameter(
+                                name = "someReference",
+                                valueReference = Reference(
+                                    reference = "reference",
+                                    display = "display",
+                                )
+                            ),
+                            Parameter(name = "someDateTime", valueDateTime = "2021-09-20T13:14:15.000Z"),
+                        )
+                    ),
                     Parameter(name = "someBoolean", valueBoolean = true),
                     Parameter(name = "someInt", valueInteger = 2),
                     Parameter(name = "someCode", valueCode = "xxx|yyy"),
                     Parameter(
-                        name = "someIdentifier", valueIdentifier = Identifier(
+                        name = "someIdentifier",
+                        valueIdentifier = Identifier(
                             system = "system",
                             value = "value",
                         )
@@ -209,7 +223,8 @@ internal class DeviceIdentityConversionKtTest {
                         Parameter(name = "parentNameTag", valueString = "PRS_RAM_IoTHub"),
                         Parameter(name = "someLong", valueDecimal = 3L),
                         Parameter(
-                            name = "someReference", valueReference = Reference(
+                            name = "someReference",
+                            valueReference = Reference(
                                 reference = "reference",
                                 display = "display",
                             )
@@ -222,7 +237,8 @@ internal class DeviceIdentityConversionKtTest {
                     Parameter(name = "someInt", valueInteger = 2),
                     Parameter(name = "someCode", valueCode = "xxx|yyy"),
                     Parameter(
-                        name = "someIdentifier", valueIdentifier = Identifier(
+                        name = "someIdentifier",
+                        valueIdentifier = Identifier(
                             system = "system",
                             value = "value",
                         )

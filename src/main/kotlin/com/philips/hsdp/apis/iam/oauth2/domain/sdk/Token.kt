@@ -12,7 +12,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Token(
     val scopes: String = "",
-    val tokenType: String= "",
+    val tokenType: String = "",
     val accessToken: String = "",
     val refreshToken: String = "",
     val expiresIn: Long = 0,

@@ -10,18 +10,21 @@ import com.philips.hsdp.apis.tdr.domain.conversion.toBatchBundle
 import com.philips.hsdp.apis.tdr.domain.conversion.toContractsDto
 import com.philips.hsdp.apis.tdr.domain.conversion.toCreatedDataItemsDto
 import com.philips.hsdp.apis.tdr.domain.conversion.toDataItemsDto
+/* ktlint-disable no-wildcard-imports */
 import com.philips.hsdp.apis.tdr.domain.hsdp.*
 import com.philips.hsdp.apis.tdr.domain.sdk.*
 import com.philips.hsdp.apis.tdr.domain.sdk.query.*
+/* ktlint-enable no-wildcard-imports */
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
-import okhttp3.*
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.Request
+import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter

@@ -13,7 +13,7 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.future.future
 import java.util.concurrent.CompletableFuture
 
-class IamUserJavaProxy(idmUrl: String, httpClient: HttpClient): AutoCloseable {
+class IamUserJavaProxy(idmUrl: String, httpClient: HttpClient) : AutoCloseable {
     private val iamUser = IamUser(idmUrl, httpClient)
     private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 

@@ -15,7 +15,7 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.future.future
 import java.util.concurrent.CompletableFuture
 
-class ProvisioningServiceJavaProxy(provisioningUrl: String, httpClient: HttpClient): AutoCloseable {
+class ProvisioningServiceJavaProxy(provisioningUrl: String, httpClient: HttpClient) : AutoCloseable {
     private val provisioningService = ProvisioningService(provisioningUrl, httpClient)
     private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 

@@ -28,7 +28,7 @@ data class CreatedResource(
      * [Meta][com.philips.hsdp.apis.tdr.domain.hsdp.Meta] object.
      */
     val lastModified: String,
-): ResourceCreationResultDto
+) : ResourceCreationResultDto
 
 /**
  * Represents a resource creation failure, be it for a contract of data item.
@@ -39,5 +39,4 @@ data class CreationFailure(
      * List of issues that were reported by TDR when trying to create a resource.
      */
     val issues: List<Issue>,
-): ResourceCreationResultDto
-
+) : ResourceCreationResultDto

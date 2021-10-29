@@ -6,7 +6,7 @@ package com.philips.hsdp.apis.iam.user.domain.hsdp
 
 import com.philips.hsdp.apis.support.UUIDSerializer
 import kotlinx.serialization.Serializable
-import java.util.*
+import java.util.UUID
 
 /**
  * User membership details with user meta information.

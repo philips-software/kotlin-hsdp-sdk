@@ -19,5 +19,3 @@ const val defaultLimit = 100
  * is returned by HSDP TDR.
  */
 val countRegex = Regex("""^.*_count=(\d+).*""")
-
-

@@ -34,7 +34,7 @@ data class BatchCreateResponseBundle(
 /**
  * Serializer that assists in deserialization of a polymorphic list with [BatchCreateResponseBundleEntry] results.
  */
-object BatchCreateResponseBundleEntrySerializer: JsonTransformingSerializer<List<BatchCreateResponseBundleEntry>>(
+object BatchCreateResponseBundleEntrySerializer : JsonTransformingSerializer<List<BatchCreateResponseBundleEntry>>(
     ListSerializer(ResourceCreationResultWithStatusSerializer)
 ) {
     override fun transformDeserialize(element: JsonElement): JsonElement = element
@@ -44,7 +44,8 @@ object BatchCreateResponseBundleEntrySerializer: JsonTransformingSerializer<List
  * Serializer that assists in deserialization of a polymorphic [BatchCreateResponseBundleEntry] result.
  */
 object ResourceCreationResultWithStatusSerializer : JsonContentPolymorphicSerializer<BatchCreateResponseBundleEntry>(
-    BatchCreateResponseBundleEntry::class) {
+    BatchCreateResponseBundleEntry::class
+) {
     override fun selectDeserializer(element: JsonElement) = when {
         "location" in element.jsonObject -> BatchCreatedResource.serializer()
         else -> BatchCreationFailure.serializer()
@@ -64,7 +65,7 @@ data class BatchCreatedResource(
     val location: String,
     val etag: String,
     val lastModified: String,
-): BatchCreateResponseBundleEntry
+) : BatchCreateResponseBundleEntry
 
 /**
  * A failed creation of a resource (data item) in a batch creation request.
@@ -73,7 +74,7 @@ data class BatchCreatedResource(
 data class BatchCreationFailure(
     override val status: Int,
     val outcome: CreationOutcome,
-): BatchCreateResponseBundleEntry
+) : BatchCreateResponseBundleEntry
 
 // NOTE: OperationOutcome cannot be used here, as batch create returns a different data structure than specified in the TDR API.
 /**

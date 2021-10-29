@@ -26,4 +26,4 @@ data class BasicResource(
      * Metadata about a resource.
      */
     override val meta: Meta? = null,
-): Resource
+) : Resource

@@ -6,7 +6,9 @@ package com.philips.hsdp.apis.support
 
 import com.philips.hsdp.apis.iam.oauth2.domain.sdk.Token
 import io.kotest.matchers.shouldBe
+/* ktlint-disable no-wildcard-imports */
 import io.mockk.*
+/* ktlint-enable no-wildcard-imports */
 import okhttp3.Protocol
 import okhttp3.Request
 import okhttp3.Response
@@ -34,52 +36,52 @@ internal class HttpClientTest {
 
     @Test
     fun `Returns null when authenticate header is not present`() {
-        //Given
+        // Given
         val request: Request = createRequest().build()
         val response: Response = createResponse().request(request).build()
-        //When
+        // When
         val result: Request? = httpClient.authenticate(null, response)
-        //Then
+        // Then
         result shouldBe null
     }
 
     @Test
     fun `Returns null when authenticate header does not contain bearer`() {
-        //Given
+        // Given
         val request: Request = createRequest().header("Authorization", "Something").build()
         val response: Response = createResponse().request(request).build()
-        //When
+        // When
         val result: Request? = httpClient.authenticate(null, response)
-        //Then
+        // Then
         result shouldBe null
     }
 
     @Test
     fun `Use current access token when not expired`() {
-        //Given
+        // Given
         val request: Request = createRequest().header("Authorization", "Bearer accessToken").build()
         val response: Response = createResponse().request(request).build()
         every { tokenRefresher.token } returns token
         every { token.accessToken } returns "some test"
         every { token.isExpired } returns false
-        //When
+        // When
         val result: Request? = httpClient.authenticate(null, response)
-        //Then
+        // Then
         result?.header("Authorization") shouldBe "Bearer some test"
     }
 
     @Test
     fun `refresh access token when expired`() {
-        //Given
+        // Given
         val request: Request = createRequest().header("Authorization", "Bearer accessToken").build()
         val response: Response = createResponse().request(request).build()
         every { tokenRefresher.token } returns token
         every { token.accessToken } returns "some test" andThen "another token"
         every { token.isExpired } returns true
         coEvery { tokenRefresher.refreshToken() } returns token
-        //When
+        // When
         val result: Request? = httpClient.authenticate(null, response)
-        //Then
+        // Then
         result?.header("Authorization") shouldBe "Bearer another token"
     }
 

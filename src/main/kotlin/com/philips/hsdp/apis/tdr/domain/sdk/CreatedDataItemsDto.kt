@@ -29,9 +29,8 @@ data class CreatedDataItemsDto(
 /**
  * Serializer that assists in serialization of a polymorphic list with [ResourceCreationResultDto] results.
  */
-object BatchResourceCreationResultDtoSerializer: JsonTransformingSerializer<List<ResourceCreationResultDto>>(
+object BatchResourceCreationResultDtoSerializer : JsonTransformingSerializer<List<ResourceCreationResultDto>>(
     ListSerializer(ResourceCreationResultDtoSerializer)
 ) {
     override fun transformSerialize(element: JsonElement): JsonElement = element
 }
-

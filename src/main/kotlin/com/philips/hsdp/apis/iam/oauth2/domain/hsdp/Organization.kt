@@ -4,8 +4,8 @@
  */
 package com.philips.hsdp.apis.iam.oauth2.domain.hsdp
 
-import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 /**
  * IAM Organization.

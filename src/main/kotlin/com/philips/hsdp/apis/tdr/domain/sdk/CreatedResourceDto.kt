@@ -29,7 +29,8 @@ data class CreatedResourceDto(
  * Serializer that assists in (de)serializing polymorphic [ResourceCreationResultDto] data structures.
  */
 object ResourceCreationResultDtoSerializer : JsonContentPolymorphicSerializer<ResourceCreationResultDto>(
-    ResourceCreationResultDto::class) {
+    ResourceCreationResultDto::class
+) {
     override fun selectDeserializer(element: JsonElement) = when {
         "location" in element.jsonObject -> CreatedResource.serializer()
         else -> CreationFailure.serializer()

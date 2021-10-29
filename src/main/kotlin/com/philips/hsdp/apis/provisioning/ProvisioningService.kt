@@ -6,7 +6,9 @@ package com.philips.hsdp.apis.provisioning
 
 import com.philips.hsdp.apis.provisioning.domain.conversion.toDeviceIdentity
 import com.philips.hsdp.apis.provisioning.domain.conversion.toParameters
+/* ktlint-disable no-wildcard-imports */
 import com.philips.hsdp.apis.provisioning.domain.hsdp.*
+/* ktlint-enable no-wildcard-imports */
 import com.philips.hsdp.apis.provisioning.domain.sdk.DeviceIdentity
 import com.philips.hsdp.apis.provisioning.domain.sdk.NewDeviceIdentity
 import com.philips.hsdp.apis.provisioning.domain.sdk.ProvisioningResponse
@@ -114,7 +116,7 @@ class ProvisioningService(private val provisioningUrl: String, private val httpC
                 val deviceIdentity = (responseResource as? Parameters)
                     ?.toDeviceIdentity()
                     ?: throw SerializationException("Response is not conforming to a device identity structure")
-                ProvisioningResponse(data = deviceIdentity,transactionId = responseTransactionId)
+                ProvisioningResponse(data = deviceIdentity, transactionId = responseTransactionId)
             }
         }
 }

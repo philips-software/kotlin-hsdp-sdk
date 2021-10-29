@@ -9,7 +9,7 @@ package com.philips.hsdp.apis.tdr.domain.sdk.query
  *
  * The [value] and [system] list fields should have the same size.
  */
-interface SystemCodeStringQuery: StringQuery {
+interface SystemCodeStringQuery : StringQuery {
     /**
      * Additional field containing the "system" values.
      */

@@ -10,7 +10,7 @@ import kotlinx.serialization.Serializable
  * A container for a collection of resources.
  */
 @Serializable
-data class  BatchBundle(
+data class BatchBundle(
     /**
      * The type of the resource represented as string.
      */

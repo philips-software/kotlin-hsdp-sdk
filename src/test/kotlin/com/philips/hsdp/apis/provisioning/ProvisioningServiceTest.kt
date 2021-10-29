@@ -5,11 +5,10 @@
 package com.philips.hsdp.apis.provisioning
 
 import com.philips.hsdp.apis.iam.oauth2.domain.sdk.Token
+/* ktlint-disable no-wildcard-imports */
 import com.philips.hsdp.apis.provisioning.domain.hsdp.*
-import com.philips.hsdp.apis.provisioning.domain.sdk.DeviceAttributes
-import com.philips.hsdp.apis.provisioning.domain.sdk.DeviceIdentity
-import com.philips.hsdp.apis.provisioning.domain.sdk.NewDeviceIdentity
-import com.philips.hsdp.apis.provisioning.domain.sdk.ProvisioningResponse
+import com.philips.hsdp.apis.provisioning.domain.sdk.*
+/* ktlint-enable no-wildcard-imports */
 import com.philips.hsdp.apis.support.HttpClient
 import com.philips.hsdp.apis.support.HttpException
 import com.philips.hsdp.apis.support.TokenRefresher
@@ -27,7 +26,9 @@ import kotlinx.serialization.encodeToString
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.SocketPolicy
+/* ktlint-disable no-wildcard-imports */
 import org.junit.jupiter.api.*
+/* ktlint-enable no-wildcard-imports */
 import java.io.InterruptedIOException
 import java.time.Duration
 
@@ -84,7 +85,8 @@ internal class ProvisioningServiceTest {
                     Parameter(name = "parentNameTag", valueString = "PRS_RAM_IoTHub"),
                     Parameter(name = "someLong", valueDecimal = 3L),
                     Parameter(
-                        name = "someReference", valueReference = Reference(
+                        name = "someReference",
+                        valueReference = Reference(
                             reference = "reference",
                             display = "display",
                         )
@@ -97,7 +99,8 @@ internal class ProvisioningServiceTest {
                 Parameter(name = "someInt", valueInteger = 2),
                 Parameter(name = "someCode", valueCode = "xxx|yyy"),
                 Parameter(
-                    name = "someIdentifier", valueIdentifier = Identifier(
+                    name = "someIdentifier",
+                    valueIdentifier = Identifier(
                         system = "system",
                         value = "value",
                     )
@@ -109,7 +112,8 @@ internal class ProvisioningServiceTest {
                 Parameter(name = "type", valueString = "type"),
                 Parameter(name = "identityType", valueString = "device"),
                 Parameter(
-                    name = "DeviceAttributes", part = listOf(
+                    name = "DeviceAttributes",
+                    part = listOf(
                         Parameter(name = "serialNumber", valueString = "1234567"),
                         Parameter(name = "materialNumber", valueString = "abcde12345"),
                         Parameter(name = "systemIdentifier", valueString = "xxx|yyy"),
@@ -125,7 +129,8 @@ internal class ProvisioningServiceTest {
                         Parameter(name = "parentNameTag", valueString = "PRS_RAM_IoTHub"),
                         Parameter(name = "someLong", valueDecimal = 3L),
                         Parameter(
-                            name = "someReference", valueReference = Reference(
+                            name = "someReference",
+                            valueReference = Reference(
                                 reference = "reference",
                                 display = "display",
                             )
@@ -137,7 +142,8 @@ internal class ProvisioningServiceTest {
                 Parameter(name = "someInt", valueInteger = 2),
                 Parameter(name = "someCode", valueCode = "xxx|yyy"),
                 Parameter(
-                    name = "someIdentifier", valueIdentifier = Identifier(
+                    name = "someIdentifier",
+                    valueIdentifier = Identifier(
                         system = "system",
                         value = "value",
                     )

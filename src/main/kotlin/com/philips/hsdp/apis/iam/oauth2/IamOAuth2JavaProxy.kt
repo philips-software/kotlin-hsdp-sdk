@@ -21,7 +21,7 @@ class IamOAuth2JavaProxy @JvmOverloads constructor(
     clientSecret: String,
     httpClient: HttpClient,
     initialToken: Token = Token()
-): AutoCloseable {
+) : AutoCloseable {
     private val iamOAuth2: IamOAuth2 = IamOAuth2(iamUrl, clientId, clientSecret, httpClient, initialToken)
     private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 

@@ -44,4 +44,4 @@ data class CertificateResponse(
      * This contains AWS root CA certificate as a string
      */
     val rootCertificateAuthority: String,
-): Resource, Result
+) : Resource, Result

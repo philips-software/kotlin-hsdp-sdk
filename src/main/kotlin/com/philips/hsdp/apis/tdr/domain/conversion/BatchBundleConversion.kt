@@ -4,7 +4,10 @@
  */
 package com.philips.hsdp.apis.tdr.domain.conversion
 
-import com.philips.hsdp.apis.tdr.domain.hsdp.*
+import com.philips.hsdp.apis.tdr.domain.hsdp.BatchBundle
+import com.philips.hsdp.apis.tdr.domain.hsdp.BatchDataItem
+import com.philips.hsdp.apis.tdr.domain.hsdp.ResourceType
+import com.philips.hsdp.apis.tdr.domain.hsdp.Type
 import com.philips.hsdp.apis.tdr.domain.sdk.NewDataItemsDto
 
 /**

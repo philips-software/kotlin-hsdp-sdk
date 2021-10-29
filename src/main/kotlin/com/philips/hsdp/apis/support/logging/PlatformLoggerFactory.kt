@@ -19,4 +19,3 @@ object PlatformLoggerFactory {
 interface AbstractPlatformLoggerFactory {
     fun create(tag: String, ofClass: Class<*>): PlatformLogger
 }
-

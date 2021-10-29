@@ -10,7 +10,7 @@ import kotlinx.serialization.Serializable
  * A container for a collection of resources.
  */
 @Serializable
-data class  Bundle(
+data class Bundle(
     /**
      * The logical id of the resource. Once assigned, this value never changes.
      */

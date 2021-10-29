@@ -105,8 +105,8 @@ data class DataItemQuery(
 //            "Either a user or device query must be supplied"
 //        }
         val dynamicPresent = dynamicStringQuery?.isNotEmpty() ?: false ||
-                dynamicIntegerQuery?.isNotEmpty() ?: false ||
-                dynamicBooleanQuery?.isNotEmpty() ?: false
+            dynamicIntegerQuery?.isNotEmpty() ?: false ||
+            dynamicBooleanQuery?.isNotEmpty() ?: false
         require((dynamicPresent && dataTypeQuery != null) || !dynamicPresent) {
             "Dynamic queries require the datatype to be specified as well"
         }
@@ -164,12 +164,12 @@ interface DynamicQuery {
 data class UserQuery(
     override val system: List<String>,
     override val value: List<String>,
-): SystemCodeStringQuery {
+) : SystemCodeStringQuery {
     override val name = "user"
 
-    constructor(system: String, value: String): this(listOf(system), listOf(value))
+    constructor(system: String, value: String) : this(listOf(system), listOf(value))
 
-    init  {
+    init {
         validate()
     }
 }
@@ -180,12 +180,12 @@ data class UserQuery(
 data class DeviceQuery(
     override val system: List<String>,
     override val value: List<String>,
-): SystemCodeStringQuery {
+) : SystemCodeStringQuery {
     override val name = "device"
 
-    constructor(system: String, value: String): this(listOf(system), listOf(value))
+    constructor(system: String, value: String) : this(listOf(system), listOf(value))
 
-    init  {
+    init {
         validate()
     }
 }
@@ -196,10 +196,10 @@ data class DeviceQuery(
 data class DataTypeQuery(
     override val system: List<String>,
     override val value: List<String>,
-): SystemCodeStringQuery {
+) : SystemCodeStringQuery {
     override val name = "dataType"
 
-    constructor(system: String, value: String): this(listOf(system), listOf(value))
+    constructor(system: String, value: String) : this(listOf(system), listOf(value))
 
     init {
         validate()
@@ -214,10 +214,10 @@ data class DataTypeQuery(
  */
 data class DataItemIdQuery(
     override val value: List<String>,
-): StringQuery {
+) : StringQuery {
     override val name = "_id"
 
-    constructor(value: String): this(listOf(value))
+    constructor(value: String) : this(listOf(value))
 
     init {
         validate()
@@ -232,10 +232,10 @@ data class DataItemIdQuery(
  */
 data class TimestampQuery(
     override val value: List<String>,
-): StringQuery {
+) : StringQuery {
     override val name = "timestamp"
 
-    constructor(value: String): this(listOf(value))
+    constructor(value: String) : this(listOf(value))
 
     init {
         super.validate()
@@ -251,10 +251,10 @@ data class TimestampQuery(
 data class RelatedUserQuery(
     override val system: List<String>,
     override val value: List<String>,
-): SystemCodeStringQuery {
+) : SystemCodeStringQuery {
     override val name = "relatedUser"
 
-    constructor(system: String, value: String): this(listOf(system), listOf(value))
+    constructor(system: String, value: String) : this(listOf(system), listOf(value))
 
     init {
         validate()
@@ -267,10 +267,10 @@ data class RelatedUserQuery(
 data class RelatedPeripheralQuery(
     override val system: List<String>,
     override val value: List<String>,
-): SystemCodeStringQuery {
+) : SystemCodeStringQuery {
     override val name = "relatedPeripheral"
 
-    constructor(system: String, value: String): this(listOf(system), listOf(value))
+    constructor(system: String, value: String) : this(listOf(system), listOf(value))
 
     init {
         validate()
@@ -282,10 +282,10 @@ data class RelatedPeripheralQuery(
  */
 data class SequenceNumberQuery(
     override val value: List<Int>,
-): IntegerQuery {
+) : IntegerQuery {
     override val name = "sequenceNumber"
 
-    constructor(value: Int): this(listOf(value))
+    constructor(value: Int) : this(listOf(value))
 
     init {
         validate()
@@ -297,10 +297,10 @@ data class SequenceNumberQuery(
  */
 data class PropositionQuery(
     override val value: List<String>,
-): StringQuery {
+) : StringQuery {
     override val name = "proposition"
 
-    constructor(value: String): this(listOf(value))
+    constructor(value: String) : this(listOf(value))
 
     init {
         validate()
@@ -312,10 +312,10 @@ data class PropositionQuery(
  */
 data class ApplicationQuery(
     override val value: List<String>,
-): StringQuery {
+) : StringQuery {
     override val name = "application"
 
-    constructor(value: String): this(listOf(value))
+    constructor(value: String) : this(listOf(value))
 
     init {
         validate()
@@ -327,10 +327,10 @@ data class ApplicationQuery(
  */
 data class SubscriptionQuery(
     override val value: List<String>,
-): StringQuery {
+) : StringQuery {
     override val name = "subscription"
 
-    constructor(value: String): this(listOf(value))
+    constructor(value: String) : this(listOf(value))
 
     init {
         validate()
@@ -342,10 +342,10 @@ data class SubscriptionQuery(
  */
 data class DataCategoryQuery(
     override val value: List<String>,
-): StringQuery {
+) : StringQuery {
     override val name = "dataCategory"
 
-    constructor(value: String): this(listOf(value))
+    constructor(value: String) : this(listOf(value))
 
     init {
         validate()
@@ -357,10 +357,10 @@ data class DataCategoryQuery(
  */
 data class DataSourceQuery(
     override val value: List<String>,
-): StringQuery {
+) : StringQuery {
     override val name = "dataSource"
 
-    constructor(value: String): this(listOf(value))
+    constructor(value: String) : this(listOf(value))
 
     init {
         validate()
@@ -375,9 +375,9 @@ data class DataSourceQuery(
 data class DynamicStringQuery(
     override val name: String,
     override val value: List<String>,
-): StringQuery, DynamicQuery {
+) : StringQuery, DynamicQuery {
 
-    constructor(name: String, value: String): this(name, listOf(value))
+    constructor(name: String, value: String) : this(name, listOf(value))
 
     init {
         validate()
@@ -396,9 +396,9 @@ data class DynamicStringQuery(
 data class DynamicIntegerQuery(
     override val name: String,
     override val value: List<Int>,
-): IntegerQuery, DynamicQuery {
+) : IntegerQuery, DynamicQuery {
 
-    constructor(name: String, value: Int): this(name, listOf(value))
+    constructor(name: String, value: Int) : this(name, listOf(value))
 
     init {
         validate()
@@ -414,7 +414,7 @@ data class DynamicIntegerQuery(
 data class DynamicBooleanQuery(
     override val name: String,
     override val value: Boolean,
-): BooleanQuery, DynamicQuery {
+) : BooleanQuery, DynamicQuery {
     init {
         validateDynamic()
     }

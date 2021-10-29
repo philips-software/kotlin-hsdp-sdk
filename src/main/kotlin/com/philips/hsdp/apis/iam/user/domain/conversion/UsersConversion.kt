@@ -7,13 +7,15 @@ package com.philips.hsdp.apis.iam.user.domain.conversion
 import com.philips.hsdp.apis.iam.user.domain.hsdp.HumanName
 import com.philips.hsdp.apis.iam.user.domain.hsdp.UserDetails
 import com.philips.hsdp.apis.iam.user.domain.hsdp.Users
+/* ktlint-disable no-wildcard-imports */
+import com.philips.hsdp.apis.iam.user.domain.sdk.*
+/* ktlint-enable no-wildcard-imports */
 import com.philips.hsdp.apis.iam.user.domain.hsdp.AccountStatus as HsdpAccountStatus
 import com.philips.hsdp.apis.iam.user.domain.hsdp.Delegations as HsdpDelegations
 import com.philips.hsdp.apis.iam.user.domain.hsdp.GrantedDelegation as HsdpGrantedDelegation
 import com.philips.hsdp.apis.iam.user.domain.hsdp.Membership as HsdpMembership
 import com.philips.hsdp.apis.iam.user.domain.hsdp.PasswordStatus as HsdpPasswordStatus
 import com.philips.hsdp.apis.iam.user.domain.hsdp.ReceivedDelegation as HsdpReceivedDelegation
-import com.philips.hsdp.apis.iam.user.domain.sdk.*
 
 fun Users.toUserList(): List<User> = entry.map {
     it.toUser()
@@ -80,4 +82,3 @@ fun HsdpReceivedDelegation.toReceivedDelegation(): ReceivedDelegation = Received
     validFrom = validFrom,
     validUntil = validUntil,
 )
-

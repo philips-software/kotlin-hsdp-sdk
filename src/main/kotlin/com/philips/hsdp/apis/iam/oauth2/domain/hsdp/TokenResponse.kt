@@ -4,7 +4,8 @@
  */
 package com.philips.hsdp.apis.iam.oauth2.domain.hsdp
 
-import kotlinx.serialization.*
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 /**
  * Token information for a logged in identity.
@@ -23,7 +24,7 @@ data class TokenResponse(
      * As of the present implementation, only the bearer token type is supported.
      */
     @SerialName("token_type")
-    val tokenType: String= "",
+    val tokenType: String = "",
 
     /**
      * The maximum length of the returned token depends on various factors such as token type (by value, and by

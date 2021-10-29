@@ -62,7 +62,7 @@ data class DataItem(
      * Identity & Access Management service, the system should be left blank and the value can
      * either be the UUID of the IAM user or its (case-sensitive) username.
      */
-    val user: Identifier?= null,
+    val user: Identifier? = null,
 
     /**
      * A string that is associated with a single object or entity within a given system.
@@ -161,4 +161,4 @@ data class DataItem(
      * provided when posting a DataItem, but will be set by TDR when the deleteTimestamp has passed.
      */
     val tombstone: Boolean? = null,
-): Resource
+) : Resource

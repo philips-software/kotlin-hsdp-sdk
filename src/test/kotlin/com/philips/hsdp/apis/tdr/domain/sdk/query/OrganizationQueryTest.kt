@@ -21,7 +21,7 @@ class OrganizationQueryTest {
         @Test
         fun `Should throw when supplying multiple organizations`() {
             val exception = shouldThrow<IllegalArgumentException> {
-                OrganizationQuery(listOf("Philips","Other"))
+                OrganizationQuery(listOf("Philips", "Other"))
             }
             exception.message shouldBe "Specify only one organization"
         }

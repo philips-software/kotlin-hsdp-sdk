@@ -52,7 +52,7 @@ class CountQueryTest {
         @Test
         fun `Should throw when using a list with multiple count values`() {
             val exception = shouldThrow<IllegalArgumentException> {
-                CountQuery(listOf(10,20))
+                CountQuery(listOf(10, 20))
             }
             exception.message shouldBe "Count value must have a single value"
         }

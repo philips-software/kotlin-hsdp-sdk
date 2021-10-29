@@ -4,7 +4,9 @@
  */
 package com.philips.hsdp.apis.tdr.domain.sdk
 
+/* ktlint-disable no-wildcard-imports */
 import com.philips.hsdp.apis.tdr.domain.hsdp.*
+/* ktlint-enable no-wildcard-imports */
 import io.kotest.matchers.shouldBe
 import kotlinx.serialization.json.Json
 import org.junit.jupiter.api.Test
@@ -39,7 +41,8 @@ internal class ResourceCreationResultDtoTest {
                         }
                     }
                 ]
-            }""".trimIndent()
+            }
+        """.trimIndent()
 
         val result = Json.decodeFromString(BatchCreateResponseBundle.serializer(), body)
         result shouldBe BatchCreateResponseBundle(

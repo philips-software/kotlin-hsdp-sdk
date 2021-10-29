@@ -8,7 +8,9 @@ import com.philips.hsdp.apis.iam.oauth2.domain.sdk.Token
 import com.philips.hsdp.apis.support.logging.PlatformLogger
 import com.philips.hsdp.apis.support.logging.maskSensitiveHeaders
 import kotlinx.coroutines.runBlocking
+/* ktlint-disable no-wildcard-imports */
 import okhttp3.*
+/* ktlint-enable no-wildcard-imports */
 import java.io.IOException
 import java.time.Duration
 import kotlin.coroutines.Continuation
@@ -19,7 +21,7 @@ import kotlin.coroutines.resumeWithException
  * HTTP client that embeds a token refresher, basically using part of IAM to obtain a token
  * and if needed refresh the token automatically.
  */
-class HttpClient(callTimeout: Duration = Duration.ofSeconds(5)): Authenticator {
+class HttpClient(callTimeout: Duration = Duration.ofSeconds(5)) : Authenticator {
     var tokenRefresher: TokenRefresher? = null
 
     val token: Token
@@ -121,5 +123,4 @@ class HttpClient(callTimeout: Duration = Duration.ofSeconds(5)): Authenticator {
     private fun isRequestWithAccessToken(response: Response): Boolean {
         return response.request.header("Authorization")?.startsWith("Bearer ") ?: false
     }
-
 }

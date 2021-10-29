@@ -6,11 +6,12 @@ package com.philips.hsdp.apis.tdr.domain.sdk
 
 import com.philips.hsdp.apis.tdr.domain.conversion.defaultLimit
 import com.philips.hsdp.apis.tdr.domain.conversion.toContractsDto
+/* ktlint-disable no-wildcard-imports */
 import com.philips.hsdp.apis.tdr.domain.hsdp.*
+/* ktlint-enable no-wildcard-imports */
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.shouldBe
 import kotlinx.serialization.json.JsonObject
-
 import org.junit.jupiter.api.DynamicTest
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.TestFactory
@@ -19,7 +20,7 @@ import kotlin.math.min
 internal class ContractsDtoTest {
 
     private fun generateBundle(total: Int, offset: Int, limit: Int? = null): Bundle {
-        val actualLimit = limit?: defaultLimit
+        val actualLimit = limit ?: defaultLimit
         return Bundle(
             resourceType = ResourceType.Bundle,
             type = Type.SearchSet,
@@ -77,7 +78,7 @@ internal class ContractsDtoTest {
                         contracts.pagination shouldBe PaginationDto(expected.offset, expected.limit)
                     },
                     DynamicTest.dynamicTest("Should generate contracts with self link equal to 'contract-[index] when bundle has [total,offset,limit]=[$total,$offset,$limit]") {
-                        contracts.data.map { it.link?.self } shouldContainExactly (bundle.entry.mapIndexed { i, _ -> "contract-$i"})
+                        contracts.data.map { it.link?.self } shouldContainExactly (bundle.entry.mapIndexed { i, _ -> "contract-$i" })
                     },
                     DynamicTest.dynamicTest("Should generate page with request-id") {
                         contracts.requestId shouldBe "request-id"

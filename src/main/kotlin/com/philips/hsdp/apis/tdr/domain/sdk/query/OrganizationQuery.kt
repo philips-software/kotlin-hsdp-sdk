@@ -11,10 +11,10 @@ package com.philips.hsdp.apis.tdr.domain.sdk.query
  */
 data class OrganizationQuery(
     override val value: List<String>,
-): StringQuery {
+) : StringQuery {
     override val name = "organization"
 
-    constructor(value: String): this(listOf(value))
+    constructor(value: String) : this(listOf(value))
 
     init {
         validate()

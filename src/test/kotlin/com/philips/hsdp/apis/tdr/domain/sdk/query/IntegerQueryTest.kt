@@ -12,10 +12,10 @@ import org.junit.jupiter.api.Test
 import java.lang.IllegalArgumentException
 
 class IntegerQueryTest {
-    data class TestQuery(override val value: List<Int>): IntegerQuery {
+    data class TestQuery(override val value: List<Int>) : IntegerQuery {
         override val name = "test"
 
-        constructor(value: Int): this(listOf(value))
+        constructor(value: Int) : this(listOf(value))
 
         init {
             validate()

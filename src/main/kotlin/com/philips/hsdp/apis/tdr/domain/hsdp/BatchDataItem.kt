@@ -108,4 +108,3 @@ data class BatchDataItem(
      */
     val blob: Blob? = null, // NOTE: the API spec does not mention that it is a base64 encoded string
 )
-

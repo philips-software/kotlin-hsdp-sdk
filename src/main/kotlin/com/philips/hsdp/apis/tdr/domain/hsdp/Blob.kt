@@ -11,7 +11,7 @@ import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import java.util.*
+import java.util.Base64
 
 @Serializable(with = BlobAsBase64StringSerializer::class)
 data class Blob(val data: ByteArray) {
@@ -31,7 +31,7 @@ data class Blob(val data: ByteArray) {
     }
 }
 
-object BlobAsBase64StringSerializer: KSerializer<Blob> {
+object BlobAsBase64StringSerializer : KSerializer<Blob> {
     override fun deserialize(decoder: Decoder): Blob {
         val base64BlobString = decoder.decodeString()
         val data = Base64.getDecoder().decode(base64BlobString)

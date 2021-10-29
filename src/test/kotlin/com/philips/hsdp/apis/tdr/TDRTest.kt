@@ -11,9 +11,11 @@ import com.philips.hsdp.apis.support.TokenRefresher
 import com.philips.hsdp.apis.support.logging.MockLoggerFactory
 import com.philips.hsdp.apis.support.logging.PlatformLoggerFactory
 import com.philips.hsdp.apis.tdr.domain.conversion.toBatchBundle
+/* ktlint-disable no-wildcard-imports */
 import com.philips.hsdp.apis.tdr.domain.hsdp.*
 import com.philips.hsdp.apis.tdr.domain.sdk.*
 import com.philips.hsdp.apis.tdr.domain.sdk.query.*
+/* ktlint-enable no-wildcard-imports */
 import io.kotest.assertions.throwables.shouldNotThrowAny
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.maps.shouldContain
@@ -31,7 +33,9 @@ import kotlinx.serialization.json.JsonPrimitive
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.SocketPolicy
+/* ktlint-disable no-wildcard-imports */
 import org.junit.jupiter.api.*
+/* ktlint-enable no-wildcard-imports */
 import java.io.InterruptedIOException
 import java.time.Duration
 
@@ -591,7 +595,8 @@ internal class TDRTest {
                         }
                     }
                 ]
-            }""".trimIndent()
+            }
+            """.trimIndent()
 
             val mockedResponse = MockResponse()
                 .setResponseCode(201)

@@ -6,7 +6,11 @@ package com.philips.hsdp.apis.provisioning.domain.conversion
 
 import com.philips.hsdp.apis.provisioning.domain.hsdp.Parameter
 import com.philips.hsdp.apis.provisioning.domain.hsdp.Parameters
-import com.philips.hsdp.apis.provisioning.domain.sdk.*
+import com.philips.hsdp.apis.provisioning.domain.sdk.DeviceAttributes
+import com.philips.hsdp.apis.provisioning.domain.sdk.DeviceExtId
+import com.philips.hsdp.apis.provisioning.domain.sdk.DeviceIdentity
+import com.philips.hsdp.apis.provisioning.domain.sdk.NewDeviceIdentity
+import com.philips.hsdp.apis.provisioning.domain.sdk.Type
 
 /**
  * Convert a [NewDeviceIdentity] to a [Parameters][com.philips.hsdp.apis.provisioning.domain.hsdp.Parameters] structure

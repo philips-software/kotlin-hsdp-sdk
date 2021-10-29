@@ -29,10 +29,13 @@ import kotlinx.serialization.json.put
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.SocketPolicy
+/* ktlint-disable no-wildcard-imports */
 import org.junit.jupiter.api.*
+/* ktlint-enable no-wildcard-imports */
 import java.io.InterruptedIOException
 import java.time.Duration
-import java.util.*
+import java.util.Base64
+import java.util.UUID
 
 class IamOAuth2Test {
 
@@ -296,7 +299,7 @@ class IamOAuth2Test {
             request.headers.toMultimap() shouldContainAll mapOf(
                 "authorization" to listOf(
                     "Basic ${
-                        Base64.getEncoder().encodeToString("clientId:clientSecret".toByteArray())
+                    Base64.getEncoder().encodeToString("clientId:clientSecret".toByteArray())
                     }"
                 ),
                 "api-version" to listOf("2"),
@@ -389,7 +392,7 @@ class IamOAuth2Test {
             request.headers.toMultimap() shouldContainAll mapOf(
                 "authorization" to listOf(
                     "Basic ${
-                        Base64.getEncoder().encodeToString("clientId:clientSecret".toByteArray())
+                    Base64.getEncoder().encodeToString("clientId:clientSecret".toByteArray())
                     }"
                 ),
                 "api-version" to listOf("2"),
@@ -483,7 +486,8 @@ class IamOAuth2Test {
             "act": {
                 "sub": "sub"
             }
-        }""".trimIndent()
+        }
+        """.trimIndent()
 
         @Test
         fun `Should return token metadata when providing a valid token and having introspect permissions`(): Unit =
@@ -508,7 +512,7 @@ class IamOAuth2Test {
                 request.headers.toMultimap() shouldContainAll mapOf(
                     "authorization" to listOf(
                         "Basic ${
-                            Base64.getEncoder().encodeToString("clientId:clientSecret".toByteArray())
+                        Base64.getEncoder().encodeToString("clientId:clientSecret".toByteArray())
                         }"
                     ),
                     "api-version" to listOf("4"),
@@ -576,7 +580,8 @@ class IamOAuth2Test {
                 "postal_code": "postalCode"
             },
             "updated_at": 123
-        }""".trimIndent()
+        }
+        """.trimIndent()
 
         @Test
         fun `Should return user info when current access token is valid`(): Unit = runBlocking {

@@ -6,16 +6,21 @@ package com.philips.hsdp.apis.tdr
 
 import com.philips.hsdp.apis.support.HttpClient
 import com.philips.hsdp.apis.tdr.domain.hsdp.PatchDocument
+/* ktlint-disable no-wildcard-imports */
 import com.philips.hsdp.apis.tdr.domain.sdk.*
+/* ktlint-enable no-wildcard-imports */
 import com.philips.hsdp.apis.tdr.domain.sdk.query.ContractQuery
 import com.philips.hsdp.apis.tdr.domain.sdk.query.DataItemDeleteQuery
 import com.philips.hsdp.apis.tdr.domain.sdk.query.DataItemPatchQuery
 import com.philips.hsdp.apis.tdr.domain.sdk.query.DataItemQuery
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.future.future
 import java.util.concurrent.CompletableFuture
 
-class TDRJavaProxy(tdrUrl: String, httpClient: HttpClient): AutoCloseable {
+class TDRJavaProxy(tdrUrl: String, httpClient: HttpClient) : AutoCloseable {
     private val tdr = TDR(tdrUrl, httpClient)
     private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 

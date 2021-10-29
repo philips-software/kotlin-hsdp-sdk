@@ -4,8 +4,8 @@
  */
 package com.philips.hsdp.apis.tdr.domain.conversion
 
-import com.philips.hsdp.apis.tdr.domain.hsdp.DataItem
 import com.philips.hsdp.apis.tdr.domain.hsdp.Bundle
+import com.philips.hsdp.apis.tdr.domain.hsdp.DataItem
 import com.philips.hsdp.apis.tdr.domain.sdk.DataItemsDto
 import com.philips.hsdp.apis.tdr.domain.sdk.PaginationDto
 

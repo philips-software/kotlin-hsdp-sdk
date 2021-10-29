@@ -1,6 +1,6 @@
 # kotlin-hsdp-api
 
-[![Build](https://github.com/philips-software/kotlin-hsdp-api/actions/workflows/gradle.yml/badge.svg)](https://github.com/philips-software/kotlin-hsdp-api/actions/workflows/gradle.yml?query=workflow%3Agradle)]
+[![Build](https://github.com/philips-software/kotlin-hsdp-api/actions/workflows/gradle.yml/badge.svg)](https://github.com/philips-software/kotlin-hsdp-api/actions/workflows/gradle.yml?query=workflow%3Agradle)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 This SDK provides a simple interface to features offered by the various services of HSDP.

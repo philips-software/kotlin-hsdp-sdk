@@ -6,6 +6,8 @@ plugins {
     id("org.sonarqube") version "3.3"
     jacoco
     id("com.github.hierynomus.license") version "0.16.1"
+    `java-library`
+    `maven-publish`
 }
 
 repositories {
@@ -74,3 +76,21 @@ tasks.withType<org.jetbrains.dokka.gradle.DokkaTask>().configureEach {
         }
     }
 }
+
+publishing {
+    publications {
+        create<MavenPublication>("kotlin-hsdp-api") {
+            from(components["kotlin"])
+            pom {
+                licenses {
+                    license {
+                        name.set("The MIT License")
+                        url.set("https://opensource.org/licenses/MIT")
+                        distribution.set("repo")
+                    }
+                }
+            }
+        }
+    }
+}
+

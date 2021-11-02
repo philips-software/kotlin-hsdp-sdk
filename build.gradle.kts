@@ -6,6 +6,7 @@ plugins {
     id("org.sonarqube") version "3.3"
     jacoco
     id("com.github.hierynomus.license") version "0.16.1"
+    `maven-publish`
 }
 
 repositories {

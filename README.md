@@ -43,7 +43,7 @@ repositories {
 
 dependencies {
   // Other dependencies...
-  implementation("com.github.philips-software:kotlin-hsdp-api:0.1.0")
+  implementation("com.github.philips-software:kotlin-hsdp-api:0.1.1")
 }
 ```
 
@@ -58,7 +58,7 @@ repositories {
 
 dependencies {
     // Other dependencies...
-    implementation "com.github.philips-software:kotlin-hsdp-api:0.1.0"
+    implementation "com.github.philips-software:kotlin-hsdp-api:0.1.1"
 }
 ```
 
@@ -77,7 +77,7 @@ dependencies {
     <dependency>
         <groupId>com.github.philips-software</groupId>
         <artifactId>kotlin-hsdp-api</artifactId>
-        <version>0.1.0</version>
+        <version>0.1.1</version>
     </dependency>
 </dependencies>
 ```

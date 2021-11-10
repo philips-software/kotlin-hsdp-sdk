@@ -10,7 +10,7 @@ import kotlinx.serialization.Serializable
  * Links related to this Bundle
  *
  * NOTE: according to API spec, both fields are optional; a link in the parent data class can be optional,
- *  but if there is a link, it should probably contain both "relation" and"url".
+ *  but if there is a link, it should probably contain both "relation" and "url".
  */
 @Serializable
 data class Link(

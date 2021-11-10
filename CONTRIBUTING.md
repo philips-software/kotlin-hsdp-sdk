@@ -76,19 +76,19 @@ Before you submit your merge request consider the following guidelines:
   Note: the optional commit `-a` command line option will automatically "add" and "rm" edited files.
 
 * Build your changes locally to ensure all the tests pass:
-* Push your branch to Github:
+* Push your branch to GitHub:
 
     ```shell
     git push origin my-fix-branch
     ```
 
-In Github, send a pull request to original main branch: f.e. `kotlin-hsdp-api:main`.
+In GitHub, send a pull request to original main branch: f.e. `kotlin-hsdp-api:main`.
 If we suggest changes, then:
 
 * Make the required updates.
 * Re-run the test suite to ensure tests are still passing.
 * Commit your changes to your branch (e.g. `my-fix-branch`).
-* Push the changes to your Github repository (this will update your Pull Request).
+* Push the changes to your GitHub repository (this will update your Pull Request).
 
 If the PR gets too outdated we may ask you to rebase and force push to update the PR:
 
@@ -97,7 +97,7 @@ git rebase main -i
 git push origin my-fix-branch -f
 ```
 
-_WARNING: Squashing or reverting commits and force-pushing thereafter may remove Github comments 
+_WARNING: Squashing or reverting commits and force-pushing thereafter may remove GitHub comments 
 on code that were previously made by you or others in your commits. Avoid any form of rebasing 
 unless necessary._
 
@@ -108,7 +108,7 @@ That's it! Thank you for your contribution!
 After your pull request is merged, you can safely delete your branch and pull the changes
 from the main (upstream) repository:
 
-* Delete the remote branch on Github either through the Github web UI or your local shell as follows:
+* Delete the remote branch on GitHub either through the GitHub web UI or your local shell as follows:
 
     ```shell
     git push origin --delete my-fix-branch

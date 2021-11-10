@@ -11,7 +11,7 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class ReceivedDelegation(
-    val delegatorId: String,
-    val validFrom: String,
-    val validUntil: String
+    val delegatorId: String? = null,
+    val validFrom: String? = null,
+    val validUntil: String? = null,
 )

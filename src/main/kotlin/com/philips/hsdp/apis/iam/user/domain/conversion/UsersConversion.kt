@@ -68,8 +68,8 @@ fun HsdpAccountStatus.toAccountStatus(): AccountStatus = AccountStatus(
 )
 
 fun HsdpDelegations.toDelegations(): Delegations = Delegations(
-    granted = granted.map { it.toGrantedDelegation() },
-    received = received.map { it.toReceivedDelegation() },
+    granted = granted?.map { it.toGrantedDelegation() },
+    received = received?.map { it.toReceivedDelegation() },
 )
 
 fun HsdpGrantedDelegation.toGrantedDelegation(): GrantedDelegation = GrantedDelegation(

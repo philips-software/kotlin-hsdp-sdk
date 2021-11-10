@@ -41,7 +41,7 @@ data class Organization(
 
     /**
      * A set of permission names that are assigned to the subject of the token in this organization
-     * and all the organizations in it's parent org structure. This property will be returned only
+     * and all the organizations in its parent org structure. This property will be returned only
      * if org_ctx is passed in the request and the organization is not in disabled state.
      */
     @SerialName("effectivePermissions")

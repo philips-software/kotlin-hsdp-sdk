@@ -11,6 +11,6 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class Delegations(
-    val granted: List<GrantedDelegation>,
-    val received: List<ReceivedDelegation>,
+    val granted: List<GrantedDelegation>? = null,
+    val received: List<ReceivedDelegation>? = null,
 )

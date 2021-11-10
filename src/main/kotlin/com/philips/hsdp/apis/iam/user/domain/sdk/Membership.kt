@@ -11,8 +11,8 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class Membership(
-    val organizationId: String,
-    val organizationName: String,
-    val roles: List<String> = emptyList(),
-    val groups: List<String> = emptyList(),
+    val organizationId: String? = null,
+    val organizationName: String? = null,
+    val roles: List<String>? = null,
+    val groups: List<String>? = null,
 )

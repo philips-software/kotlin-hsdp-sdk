@@ -14,20 +14,20 @@ data class Membership(
     /**
      * The target organization where user is having membership.
      */
-    val organizationId: String,
+    val organizationId: String? = null,
 
     /**
      * Name of the target organization.
      */
-    val organizationName: String,
+    val organizationName: String? = null,
 
     /**
      * Contains a list of role names the user is having in the target organization.
      */
-    val roles: List<String> = emptyList(),
+    val roles: List<String>? = null,
 
     /**
      * Contains a list of group names that the user is a member of in the target organization.
      */
-    val groups: List<String> = emptyList(),
+    val groups: List<String>? = null,
 )

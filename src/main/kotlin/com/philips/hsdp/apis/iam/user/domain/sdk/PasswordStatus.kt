@@ -11,6 +11,6 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class PasswordStatus(
-    val passwordExpiresOn: String,
-    val passwordChangedOn: String,
+    val passwordExpiresOn: String? = null,
+    val passwordChangedOn: String? = null,
 )

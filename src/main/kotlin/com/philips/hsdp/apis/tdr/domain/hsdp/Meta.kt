@@ -12,7 +12,7 @@ import kotlinx.serialization.Serializable
  * Changes to the content may not always be associated with version changes to the resource.
  *
  * NOTE: according to API spec, both fields are optional; a meta in the parent data class can be optional,
- *  but if there is a meta, it should probably contain both "lastUpdated" and"versionId".
+ *  but if there is a meta, it should probably contain both "lastUpdated" and "versionId".
  */
 @Serializable
 data class Meta(

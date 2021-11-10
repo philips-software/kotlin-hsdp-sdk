@@ -43,7 +43,6 @@ object BlobAsBase64StringSerializer : KSerializer<Blob> {
 
     override fun serialize(encoder: Encoder, value: Blob) {
         val base64BlobString = Base64.getEncoder().encodeToString(value.data)
-//        val base64BlobString = "blabla"
         encoder.encodeString(base64BlobString)
     }
 }

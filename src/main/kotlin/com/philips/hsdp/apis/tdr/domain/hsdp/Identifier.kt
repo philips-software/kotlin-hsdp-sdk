@@ -21,7 +21,7 @@ data class Identifier(
      * the system should be left blank.
      *
      * NOTE: the API spec shows the field as optional; it seems that an empty string is used (not null)
-     * for IAM identities, so it is not optional but it may be an empty string.
+     * for IAM identities, so it is not optional, but it may be an empty string.
      */
     val system: String,
 

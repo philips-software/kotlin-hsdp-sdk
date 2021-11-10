@@ -15,15 +15,15 @@ data class PasswordStatus(
     /**
      * Date on which the current password is going to expire.
      */
-    val passwordExpiresOn: String,
+    val passwordExpiresOn: String? = null,
 
     /**
      * Date on which current password was set.
      */
-    val passwordChangedOn: String,
+    val passwordChangedOn: String? = null,
 ) {
     init {
-        require(passwordExpiresOn.matches(iso8601UtcPattern))
-        require(passwordChangedOn.matches(iso8601UtcPattern))
+        require(passwordExpiresOn?.matches(iso8601UtcPattern) ?: true)
+        require(passwordChangedOn?.matches(iso8601UtcPattern) ?: true)
     }
 }

@@ -283,20 +283,20 @@ The current implementation covers only a subset of HSDP APIs. Additional functio
   - [x] Identity Management
     - [x] User
       - [x] Search user account
-      - [ ] Register a user account
-      - [ ] Delete a user account
+      - [x] Register a user account
+      - [x] Delete a user account
       - [ ] Set password for user account
-      - [ ] Change user password
-      - [ ] Reset password service with kba validation
-      - [ ] Enables user password to be reset by admin
-      - [ ] Resend account activation email to the user
-      - [ ] Unlock user account
-      - [ ] Retrieve saved kba challenges questions for a user
-      - [ ] Get effective password policy for a user
-      - [ ] Send verification code (OTP) to secondary auth factors like email and SMS
-      - [ ] Verify the code (OTP) sent to secondary auth factors like email and SMS
-      - [ ] Remove OTP device registration
-      - [ ] Update user's login ID
+      - [x] Change user password
+      - [x] Reset password service with kba validation
+      - [x] Enables user password to be reset by admin
+      - [x] Resend account activation email to the user
+      - [x] Unlock user account
+      - [x] Retrieve saved kba challenges questions for a user
+      - [x] Get effective password policy for a user
+      - [x] Send verification code (OTP) to secondary auth factors like email and SMS
+      - [x] Verify the code (OTP) sent to secondary auth factors like email and SMS
+      - [x] Remove OTP device registration
+      - [x] Update user's login ID
       - [ ] Enables a user to delegate access to another user to act on its behalf
       - [ ] Revoke delegation granted to given delegatee
   - [ ] Policy Management

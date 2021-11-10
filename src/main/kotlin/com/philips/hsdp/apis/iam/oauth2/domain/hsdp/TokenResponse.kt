@@ -28,7 +28,7 @@ data class TokenResponse(
 
     /**
      * The maximum length of the returned token depends on various factors such as token type (by value, and by
-     * reference) and the values requested in the token. As an illustration a OAuth 2.0 client which has name of
+     * reference) and the values requested in the token. As an illustration a OAuth 2.0 client which has a name of
      * 20 characters trying to authenticate a user who has the loginID of 20 character, asking for 10 scopes -
      * each of 50 characters will return in 1093 characters in resulting token of token-by-reference type.
      * As tokens are opaque strings, we recommend not to depend on the returned length. If your implementation
@@ -40,7 +40,7 @@ data class TokenResponse(
 
     /**
      * The maximum length of the returned token depends on various factors such as token type (by value, and by
-     * reference) and the values requested in the token. As an illustration a OAuth 2.0 client which has name of
+     * reference) and the values requested in the token. As an illustration a OAuth 2.0 client which has a name of
      * 20 characters trying to authenticate a user who has the loginID of 20 character, asking for 10 scopes -
      * each of 50 characters will return in 1093 characters in resulting token of token-by-reference type.
      * As tokens are opaque strings, we recommend not to depend on the returned length. If your implementation
@@ -70,7 +70,7 @@ data class TokenResponse(
     val signedToken: String = "",
 
     /**
-     * An identifier for the representation of the issued security token. This identifier will be returned in
+     * An identifier for the representation of the issued security token. This identifier will be in
      * the response for grant-type urn:ietf:params:oauth:grant-type:token-exchange.
      */
     @SerialName("issued_token_type")

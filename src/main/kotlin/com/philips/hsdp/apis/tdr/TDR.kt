@@ -116,9 +116,9 @@ class TDR(private val tdrUrl: String, private val httpClient: HttpClient) {
                 .get()
                 .build()
 
-            httpClient.performRequest(request, continuation, logger) { responseHeaders, responseBody ->
-                requireNotNull(responseBody)
-                val responseRequestId = responseHeaders[requestIdHeader]!!
+            httpClient.performRequest(request, continuation, logger) { response ->
+                val responseBody = requireNotNull(response.body?.string())
+                val responseRequestId = response.headers[requestIdHeader]!!
                 val bundle = json.decodeFromString(Bundle.serializer(), responseBody)
                 bundle.toDataItemsDto(responseRequestId)
             }
@@ -144,14 +144,14 @@ class TDR(private val tdrUrl: String, private val httpClient: HttpClient) {
                 .post(body)
                 .build()
 
-            httpClient.performRequest(request, continuation, logger) { responseHeaders, _ ->
+            httpClient.performRequest(request, continuation, logger) { response ->
                 CreatedResourceDto(
                     resource = CreatedResource(
-                        location = responseHeaders["Location"]!!,
-                        etag = responseHeaders["ETag"]!!,
-                        lastModified = toIso8601DateFormat(responseHeaders["Last-Modified"]!!),
+                        location = response.headers["Location"]!!,
+                        etag = response.headers["ETag"]!!,
+                        lastModified = toIso8601DateFormat(response.headers["Last-Modified"]!!),
                     ),
-                    requestId = responseHeaders[requestIdHeader]!!
+                    requestId = response.headers[requestIdHeader]!!
                 )
             }
         }
@@ -181,8 +181,8 @@ class TDR(private val tdrUrl: String, private val httpClient: HttpClient) {
                 .patch(body)
                 .build()
 
-            httpClient.performRequest(request, continuation, logger) { responseHeaders, _ ->
-                RequestIdDto(responseHeaders[requestIdHeader]!!)
+            httpClient.performRequest(request, continuation, logger) { response ->
+                RequestIdDto(response.headers[requestIdHeader]!!)
             }
         }
 
@@ -202,8 +202,8 @@ class TDR(private val tdrUrl: String, private val httpClient: HttpClient) {
                 .delete()
                 .build()
 
-            httpClient.performRequest(request, continuation, logger) { responseHeaders, _ ->
-                RequestIdDto(responseHeaders[requestIdHeader]!!)
+            httpClient.performRequest(request, continuation, logger) { response ->
+                RequestIdDto(response.headers[requestIdHeader]!!)
             }
         }
 
@@ -227,10 +227,10 @@ class TDR(private val tdrUrl: String, private val httpClient: HttpClient) {
                 .post(body)
                 .build()
 
-            httpClient.performRequest(request, continuation, logger) { responseHeaders, responseBody ->
-                requireNotNull(responseBody)
+            httpClient.performRequest(request, continuation, logger) { response ->
+                val responseBody = requireNotNull(response.body?.string())
                 val responseBundle = Json.decodeFromString(BatchCreateResponseBundle.serializer(), responseBody)
-                responseBundle.toCreatedDataItemsDto(responseHeaders[requestIdHeader]!!)
+                responseBundle.toCreatedDataItemsDto(response.headers[requestIdHeader]!!)
             }
         }
 
@@ -254,14 +254,14 @@ class TDR(private val tdrUrl: String, private val httpClient: HttpClient) {
                 .post(body)
                 .build()
 
-            httpClient.performRequest(request, continuation, logger) { responseHeaders, _ ->
+            httpClient.performRequest(request, continuation, logger) { response ->
                 CreatedResourceDto(
                     resource = CreatedResource(
-                        location = responseHeaders["Location"]!!,
-                        etag = responseHeaders["ETag"]!!,
-                        lastModified = toIso8601DateFormat(responseHeaders["Last-Modified"]!!),
+                        location = response.headers["Location"]!!,
+                        etag = response.headers["ETag"]!!,
+                        lastModified = toIso8601DateFormat(response.headers["Last-Modified"]!!),
                     ),
-                    requestId = responseHeaders[requestIdHeader]!!
+                    requestId = response.headers[requestIdHeader]!!
                 )
             }
         }
@@ -284,9 +284,9 @@ class TDR(private val tdrUrl: String, private val httpClient: HttpClient) {
                 .get()
                 .build()
 
-            httpClient.performRequest(request, continuation, logger) { responseHeaders, responseBody ->
-                requireNotNull(responseBody)
-                val responseRequestId = responseHeaders[requestIdHeader]!!
+            httpClient.performRequest(request, continuation, logger) { response ->
+                val responseBody = requireNotNull(response.body?.string())
+                val responseRequestId = response.headers[requestIdHeader]!!
                 val contractsBundle: Bundle = json.decodeFromString(responseBody)
                 contractsBundle.toContractsDto(responseRequestId)
             }

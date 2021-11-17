@@ -109,9 +109,9 @@ class ProvisioningService(private val provisioningUrl: String, private val httpC
                 .post(body)
                 .build()
 
-            httpClient.performRequest(request, continuation, logger) { responseHeaders, responseBody ->
-                requireNotNull(responseBody)
-                val responseTransactionId = responseHeaders["transactionId"]
+            httpClient.performRequest(request, continuation, logger) { response ->
+                val responseBody = requireNotNull(response.body?.string())
+                val responseTransactionId = response.headers["transactionId"]
                 val responseResource: Resource = json.decodeFromString(responseBody)
                 val deviceIdentity = (responseResource as? Parameters)
                     ?.toDeviceIdentity()

@@ -145,8 +145,9 @@ class IamOAuth2(
                 .post(postBody)
                 .build()
 
-            httpClient.performRequest(request, continuation, logger) { _, responseBody ->
-                token = Json.decodeFromString<TokenResponse>(requireNotNull(responseBody)).toToken()
+            httpClient.performRequest(request, continuation, logger) { response ->
+                val responseBody = requireNotNull(response.body?.string())
+                token = Json.decodeFromString<TokenResponse>(responseBody).toToken()
                 token
             }
         }
@@ -175,8 +176,9 @@ class IamOAuth2(
                 .post(postBody)
                 .build()
 
-            httpClient.performRequest(request, continuation, logger) { _, responseBody ->
-                token = Json.decodeFromString<TokenResponse>(requireNotNull(responseBody)).toToken()
+            httpClient.performRequest(request, continuation, logger) { response ->
+                val responseBody = requireNotNull(response.body?.string())
+                token = Json.decodeFromString<TokenResponse>(responseBody).toToken()
                 token
             }
         }
@@ -205,8 +207,9 @@ class IamOAuth2(
                 .post(postBody)
                 .build()
 
-            httpClient.performRequest(request, continuation, logger) { _, responseBody ->
-                token = Json.decodeFromString<TokenResponse>(requireNotNull(responseBody)).toToken()
+            httpClient.performRequest(request, continuation, logger) { response ->
+                val responseBody = requireNotNull(response.body?.string())
+                token = Json.decodeFromString<TokenResponse>(responseBody).toToken()
                 token
             }
         }
@@ -256,8 +259,9 @@ class IamOAuth2(
                 .post(postBody)
                 .build()
 
-            httpClient.performRequest(request, continuation, logger) { _, responseBody ->
-                val newToken: TokenResponse = Json.decodeFromString(requireNotNull(responseBody))
+            httpClient.performRequest(request, continuation, logger) { response ->
+                val responseBody = requireNotNull(response.body?.string())
+                val newToken: TokenResponse = Json.decodeFromString(responseBody)
                 token = Token(
                     accessToken = newToken.accessToken,
                     refreshToken = token.refreshToken,
@@ -293,7 +297,7 @@ class IamOAuth2(
                 .post(postBody)
                 .build()
 
-            httpClient.performRequest(request, continuation, logger) { _, _ ->
+            httpClient.performRequest(request, continuation, logger) {
                 token = Token(timestamp = 0)
                 token
             }
@@ -321,8 +325,9 @@ class IamOAuth2(
                 .post(postBody)
                 .build()
 
-            httpClient.performRequest(request, continuation, logger) { _, responseBody ->
-                Json.decodeFromString<IntrospectionResponse>(requireNotNull(responseBody)).toTokenMetadata()
+            httpClient.performRequest(request, continuation, logger) { response ->
+                val responseBody = requireNotNull(response.body?.string())
+                Json.decodeFromString<IntrospectionResponse>(responseBody).toTokenMetadata()
             }
         }
 
@@ -341,8 +346,9 @@ class IamOAuth2(
                 .get()
                 .build()
 
-            httpClient.performRequest(request, continuation, logger) { _, responseBody ->
-                Json.decodeFromString<UserInfoResponse>(requireNotNull(responseBody)).toUserInfo()
+            httpClient.performRequest(request, continuation, logger) { response ->
+                val responseBody = requireNotNull(response.body?.string())
+                Json.decodeFromString<UserInfoResponse>(responseBody).toUserInfo()
             }
         }
 }

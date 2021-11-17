@@ -15,12 +15,12 @@ data class AccountStatus(
     /**
      * Date on which a successful login attempt was made by the user.
      */
-    val lastLoginTime: String,
+    val lastLoginTime: String? = null,
 
     /**
      * Indicates whether the user is challenged with OTP during login flow.
      */
-    val mfaStatus: String,
+    val mfaStatus: String? = null,
 
     /**
      * Boolean value indicating whether user email is verified.
@@ -30,7 +30,7 @@ data class AccountStatus(
     /**
      * Boolean value indicating whether user email is verified.
      */
-    val emailVerified: Boolean,
+    val emailVerified: Boolean? = null,
 
     /**
      * Boolean value indicating whether user password is required to be changed.
@@ -56,7 +56,7 @@ data class AccountStatus(
      * Number of login attempts with the invalid credential. Increments by 1 on each failed login due to
      * the invalid credential. Once the account is locked this count doesn't increment further.
      */
-    val numberOfInvalidAttempt: Int,
+    val numberOfInvalidAttempt: Int? = null,
 
     /**
      * Date on which last un-successful login attempt was made.
@@ -64,7 +64,7 @@ data class AccountStatus(
     val lastInvalidAttemptedOn: String? = null
 ) {
     init {
-        require(lastLoginTime.matches(iso8601UtcPattern))
+        require(lastLoginTime?.matches(iso8601UtcPattern) ?: true)
         require(accountLockedOn?.matches(iso8601UtcPattern) ?: true)
         require(accountLockedUntil?.matches(iso8601UtcPattern) ?: true)
         require(lastInvalidAttemptedOn?.matches(iso8601UtcPattern) ?: true)

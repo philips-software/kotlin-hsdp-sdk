@@ -11,14 +11,14 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class AccountStatus(
-    val lastLoginTime: String,
-    val mfaStatus: String,
+    val lastLoginTime: String? = null,
+    val mfaStatus: String? = null,
     val phoneVerified: Boolean? = null,
-    val emailVerified: Boolean,
+    val emailVerified: Boolean? = null,
     val mustChangePassword: Boolean? = null,
     val disabled: Boolean? = null,
     val accountLockedOn: String? = null,
     val accountLockedUntil: String? = null,
-    val numberOfInvalidAttempt: Int,
-    val lastInvalidAttemptedOn: String? = null
+    val numberOfInvalidAttempt: Int? = null,
+    val lastInvalidAttemptedOn: String? = null,
 )

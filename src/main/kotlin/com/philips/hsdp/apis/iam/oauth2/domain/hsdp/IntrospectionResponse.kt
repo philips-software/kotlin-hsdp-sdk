@@ -46,7 +46,7 @@ data class IntrospectionResponse(
     val tokenType: String = "",
 
     /**
-     * Integer timestamp, measured in the number of seconds since January 1 1970 UTC, indicating when
+     * Integer timestamp, measured in the number of seconds since January 1st 1970 UTC, indicating when
      * this token will expire, as defined in JWT `RFC7519`.
      */
     @SerialName("exp")
@@ -93,7 +93,7 @@ data class IntrospectionResponse(
     val tokenTypeHint: String = "",
 
     /**
-     * Organization Id of client used for token generation.
+     * Organization ID of client used for token generation.
      */
     @SerialName("client_organization_id")
     val clientOrganizationId: String = "",

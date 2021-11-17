@@ -346,7 +346,7 @@ internal class TDRTest {
             request.headers.toMultimap() shouldContainAll mapOf(
                 "authorization" to listOf("Bearer ${httpClient.token.accessToken}"),
                 "api-version" to listOf("5"),
-                "Content-Type" to listOf("application/json; charset=utf-8"),
+                "content-type" to listOf("application/json; charset=utf-8"),
                 "accept" to listOf("application/json; charset=utf-8"),
             )
         }
@@ -488,7 +488,7 @@ internal class TDRTest {
             request.headers.toMultimap() shouldContainAll mapOf(
                 "authorization" to listOf("Bearer ${httpClient.token.accessToken}"),
                 "api-version" to listOf("5"),
-                "Content-Type" to listOf("application/json; charset=utf-8"),
+                "content-type" to listOf("application/json; charset=utf-8"),
                 "accept" to listOf("application/json; charset=utf-8"),
             )
         }
@@ -619,7 +619,7 @@ internal class TDRTest {
             request.headers.toMultimap() shouldContainAll mapOf(
                 "authorization" to listOf("Bearer ${httpClient.token.accessToken}"),
                 "api-version" to listOf("5"),
-                "Content-Type" to listOf("application/json; charset=utf-8"),
+                "content-type" to listOf("application/json; charset=utf-8"),
                 "accept" to listOf("application/json; charset=utf-8"),
             )
         }
@@ -703,7 +703,7 @@ internal class TDRTest {
             request.headers.toMultimap() shouldContainAll mapOf(
                 "authorization" to listOf("Bearer ${httpClient.token.accessToken}"),
                 "api-version" to listOf("5"),
-                "Content-Type" to listOf("application/json; charset=utf-8"),
+                "content-type" to listOf("application/json; charset=utf-8"),
                 "accept" to listOf("application/json; charset=utf-8"),
             )
         }

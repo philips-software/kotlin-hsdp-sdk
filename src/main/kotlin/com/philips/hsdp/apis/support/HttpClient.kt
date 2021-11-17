@@ -82,7 +82,7 @@ class HttpClient(callTimeout: Duration = Duration.ofSeconds(5)) : Authenticator 
         request: Request,
         continuation: Continuation<T>,
         logger: PlatformLogger,
-        successResponseHandler: (responseHeaders: Headers, responseBody: String?) -> T
+        successResponseHandler: (response: Response) -> T
     ) {
         logger.debug { "${request.method} ${request.url}, headers: ${request.headers.maskSensitiveHeaders()}" }
         client
@@ -94,7 +94,6 @@ class HttpClient(callTimeout: Duration = Duration.ofSeconds(5)) : Authenticator 
 
                 override fun onResponse(call: Call, response: Response) {
                     // require(response.request.headers.get("Api-Version") == response.headers.get("Api-Version"))
-                    val responseBody = response.body?.string()
 //                    logger.debug { "Response ${response.code} $responseBody" }
                     // Disable logging of the body for now, as it would show e.g. DeviceIdentity
                     // or other sensitive data in the CI test logs.
@@ -103,14 +102,14 @@ class HttpClient(callTimeout: Duration = Duration.ofSeconds(5)) : Authenticator 
                     logger.debug { "Response ${response.code}" }
                     if (response.isSuccessful) {
                         try {
-                            val result = successResponseHandler(response.headers, responseBody)
+                            val result = successResponseHandler(response)
                             continuation.resume(result)
                         } catch (e: Exception) {
                             logger.error { "Request failed: ${e.message}" }
                             continuation.resumeWithException(e)
                         }
                     } else {
-                        continuation.resumeWithException(HttpException(response.code, responseBody ?: ""))
+                        continuation.resumeWithException(HttpException(response.code, response.body?.string() ?: ""))
                     }
                 }
             })

@@ -104,7 +104,7 @@ data class BatchDataItem(
     val data: JsonObject? = null,
 
     /**
-     * A larger object, not necessarily a JSON document. No search can be performed on the blob.
+     * A larger object, not necessarily a JSON document. No search can be performed on data in the blob.
      */
     val blob: Blob? = null, // NOTE: the API spec does not mention that it is a base64 encoded string
 )

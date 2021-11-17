@@ -127,7 +127,7 @@ data class DataItem(
     val data: JsonObject? = null,
 
     /**
-     * A larger object, not necessarily a JSON document. No search can be performed on the blob.
+     * A larger object, not necessarily a JSON document. No search can be performed on data in the blob.
      */
     val blob: Blob? = null, // NOTE: the API spec does not mention that it is a base64 encoded string
 
@@ -157,7 +157,7 @@ data class DataItem(
      * When true, the DataItem is tombstoned. The data and blob properties will not be returned
      * when a GET operation is performed on the DataItem. After the grace period, the DataItem
      * will be permanently deleted. To reverse the tombstoning process, perform a PATCH operation
-     * on the DataItem and set the deteleTimestamp to a future moment. Note: This field cannot be
+     * on the DataItem and set the deleteTimestamp to a future moment. Note: This field cannot be
      * provided when posting a DataItem, but will be set by TDR when the deleteTimestamp has passed.
      */
     val tombstone: Boolean? = null,

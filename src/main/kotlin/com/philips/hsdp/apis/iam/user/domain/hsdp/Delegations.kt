@@ -14,10 +14,10 @@ data class Delegations(
     /**
      * Granted Delegations.
      */
-    val granted: List<GrantedDelegation>,
+    val granted: List<GrantedDelegation>? = null,
 
     /**
      * Received Delegations.
      */
-    val received: List<ReceivedDelegation>,
+    val received: List<ReceivedDelegation>? = null,
 )

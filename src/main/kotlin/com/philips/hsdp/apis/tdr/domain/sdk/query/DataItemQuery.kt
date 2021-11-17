@@ -191,7 +191,7 @@ data class DeviceQuery(
 }
 
 /**
- * Query structure for the data type of a data item.
+ * Query structure for the datatype of a data item.
  */
 data class DataTypeQuery(
     override val system: List<String>,

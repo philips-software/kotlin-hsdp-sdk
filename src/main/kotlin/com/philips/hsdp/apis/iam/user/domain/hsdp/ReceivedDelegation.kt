@@ -14,15 +14,15 @@ data class ReceivedDelegation(
     /**
      * Unique id of the delegator
      */
-    val delegatorId: String,
+    val delegatorId: String? = null,
 
     /**
      * Start time stamp of time window when delegation is activated. Date time format per RFC 3339 in UTC time zone.
      */
-    val validFrom: String,
+    val validFrom: String? = null,
 
     /**
      * End time stamp of time window when delegation is deactivated. Date time format per RFC 3339 in UTC time zone.
      */
-    val validUntil: String
+    val validUntil: String? = null,
 )

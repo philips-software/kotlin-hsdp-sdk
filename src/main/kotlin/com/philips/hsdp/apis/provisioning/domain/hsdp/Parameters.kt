@@ -9,7 +9,7 @@ import kotlinx.serialization.Serializable
 
 /**
  * Parameters represent an array of objects of type Parameter. At least two parameters must be provided.
- * Maximally 32 parameters will be accepted. Total size of Parameters is 16kB.
+ * Maximally 32 parameters will be accepted. Total size of Parameters is 16 kB.
  * Only first level of Parameter can be of type Parameters (aka part)
  */
 @Serializable

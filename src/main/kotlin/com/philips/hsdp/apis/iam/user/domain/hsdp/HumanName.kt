@@ -14,10 +14,10 @@ data class HumanName(
     /**
      * Family name (often called 'Surname').
      */
-    val family: String = "",
+    val family: String,
 
     /**
      * Given names (not always 'first'). Includes middle names.
      */
-    val given: String = "",
+    val given: String,
 )

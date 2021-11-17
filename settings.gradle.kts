@@ -1,1 +1,1 @@
-rootProject.name = "kotlin-hsdp-api"
+rootProject.name = "kotlin-hsdp-sdk"

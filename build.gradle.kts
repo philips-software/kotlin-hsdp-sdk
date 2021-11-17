@@ -79,7 +79,7 @@ tasks.withType<org.jetbrains.dokka.gradle.DokkaTask>().configureEach {
 
 publishing {
     publications {
-        create<MavenPublication>("kotlin-hsdp-api") {
+        create<MavenPublication>("kotlin-hsdp-sdk") {
             from(components["kotlin"])
             pom {
                 licenses {

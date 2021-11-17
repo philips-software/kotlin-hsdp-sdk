@@ -1,4 +1,4 @@
-# kotlin-hsdp-api
+# kotlin-hsdp-sdk
 
 [![Build](https://github.com/philips-software/kotlin-hsdp-api/actions/workflows/gradle.yml/badge.svg?branch=main)](https://github.com/philips-software/kotlin-hsdp-api/actions/workflows/gradle.yml?query=workflow%3Agradle)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -43,7 +43,7 @@ repositories {
 
 dependencies {
   // Other dependencies...
-  implementation("com.github.philips-software:kotlin-hsdp-api:0.1.1")
+  implementation("com.github.philips-software:kotlin-hsdp-sdk:0.2.0")
 }
 ```
 
@@ -58,7 +58,7 @@ repositories {
 
 dependencies {
     // Other dependencies...
-    implementation "com.github.philips-software:kotlin-hsdp-api:0.1.1"
+    implementation "com.github.philips-software:kotlin-hsdp-sdk:0.2.0"
 }
 ```
 
@@ -76,8 +76,8 @@ dependencies {
     ...
     <dependency>
         <groupId>com.github.philips-software</groupId>
-        <artifactId>kotlin-hsdp-api</artifactId>
-        <version>0.1.1</version>
+        <artifactId>kotlin-hsdp-sdk</artifactId>
+        <version>0.2.0</version>
     </dependency>
 </dependencies>
 ```

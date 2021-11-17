@@ -1,4 +1,4 @@
-# Module kotlin-hsdp-api
+# Module kotlin-hsdp-sdk
 
 The HSDP SDK, written in Kotlin, can be used in Java/Kotlin backend services and Android applications to access HSDP 
 services in a user-friendly way. It abstracts away details that are of no interest to an application developer.

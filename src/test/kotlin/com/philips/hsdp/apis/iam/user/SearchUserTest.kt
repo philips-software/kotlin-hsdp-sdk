@@ -16,7 +16,9 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.SerializationException
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.SocketPolicy
+import org.junit.jupiter.api.DynamicTest
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestFactory
 import java.io.InterruptedIOException
 
 class SearchUserTest : IamUserTestBase() {
@@ -45,6 +47,28 @@ class SearchUserTest : IamUserTestBase() {
         )
         result shouldBe expectedSearchResult
     }
+
+    @TestFactory
+    fun `Should use provided profileType as query parameter value in the url`() = ProfileType.values()
+        .map { profileType ->
+            DynamicTest.dynamicTest("Should contain ${profileType.value} as parameter value when supplying $profileType") {
+                runBlocking {
+                    // Given
+                    val mockedResponse = MockResponse()
+                        .setResponseCode(200)
+                        .setBody(validHsdpResponse)
+
+                    server.enqueue(mockedResponse)
+
+                    // When
+                    iamUser.searchUser(loginId, profileType)
+                    val request = server.takeRequest()
+
+                    // Then
+                    request.requestUrl?.encodedQuery shouldBe "userId=$loginId&profileType=${profileType.value}"
+                }
+            }
+        }
 
     @Test
     fun `Should return null when the user cannot be found`(): Unit = runBlocking {

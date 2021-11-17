@@ -114,13 +114,15 @@ class IamUser(
      *
      * @param userId A string that uniquely identifies a user in the IAM system. The account matching is performed
      *               using this parameter which takes either login id or a unique id of a user account.
+     * @param profileType: Determines the parts of information (if available) to be included in the search results
+     *                     (membership, account status, password status, consented apps, delegations, all)
      * @return The information about the user or null if the user with given id does not exist.
      */
-    suspend fun searchUser(userId: String): User? =
+    suspend fun searchUser(userId: String, profileType: ProfileType = ProfileType.All): User? =
         suspendCoroutine { continuation ->
             val queryParameters = listOf(
                 QueryParameter("userId", userId),
-                QueryParameter("profileType", "all")
+                QueryParameter("profileType", profileType.value)
             )
 
             val request = buildRequest(

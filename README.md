@@ -285,7 +285,7 @@ The current implementation covers only a subset of HSDP APIs. Additional functio
       - [x] Search user account
       - [x] Register a user account
       - [x] Delete a user account
-      - [ ] Set password for user account
+      - [x] Set password for user account
       - [x] Change user password
       - [x] Reset password service with kba validation
       - [x] Enables user password to be reset by admin

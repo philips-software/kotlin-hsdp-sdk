@@ -13,13 +13,11 @@ import io.kotest.matchers.should
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldStartWith
 import kotlinx.coroutines.runBlocking
-import kotlinx.serialization.SerializationException
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.SocketPolicy
 import org.junit.jupiter.api.DynamicTest
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestFactory
-import java.io.InterruptedIOException
 
 class SearchUserTest : IamUserTestBase() {
 
@@ -105,7 +103,7 @@ class SearchUserTest : IamUserTestBase() {
     }
 
     @Test
-    fun `Should throw a SerializationException when the returned JSON is invalid`(): Unit = runBlocking {
+    fun `Should throw a HttpException when the returned JSON is invalid`(): Unit = runBlocking {
         val mockedResponse = MockResponse()
             .setResponseCode(200)
             .setBody("""{"invalid json"}""")
@@ -113,27 +111,29 @@ class SearchUserTest : IamUserTestBase() {
         server.enqueue(mockedResponse)
 
         // When/Then
-        val exception = shouldThrow<SerializationException> {
+        val exception = shouldThrow<HttpException> {
             iamUser.searchUser(loginId)
         }
         server.takeRequest()
 
+        exception.code shouldBe 500
         exception.message shouldStartWith "Unexpected JSON token at offset 14: Expected semicolon"
     }
 
     @Test
-    fun `Should throw a InterruptedIOException when the server does not respond`(): Unit = runBlocking {
+    fun `Should throw a HttpException when the server does not respond`(): Unit = runBlocking {
         val mockedResponse = MockResponse().setSocketPolicy(SocketPolicy.NO_RESPONSE)
 
         server.enqueue(mockedResponse)
 
         // When/Then
-        val result = shouldThrow<InterruptedIOException> {
+        val exception = shouldThrow<HttpException> {
             iamUser.searchUser(loginId)
         }
         server.takeRequest()
 
-        result.message shouldBe "timeout"
+        exception.code shouldBe 500
+        exception.message shouldBe "timeout"
     }
 
     private val validHsdpResponse = """

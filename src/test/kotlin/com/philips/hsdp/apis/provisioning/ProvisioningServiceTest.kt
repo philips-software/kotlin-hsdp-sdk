@@ -21,7 +21,6 @@ import io.kotest.matchers.string.shouldStartWith
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.encodeToString
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -29,7 +28,6 @@ import okhttp3.mockwebserver.SocketPolicy
 /* ktlint-disable no-wildcard-imports */
 import org.junit.jupiter.api.*
 /* ktlint-enable no-wildcard-imports */
-import java.io.InterruptedIOException
 import java.time.Duration
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -233,7 +231,7 @@ internal class ProvisioningServiceTest {
         }
 
         @Test
-        fun `Should throw a SerializationException when the returned JSON is invalid`(): Unit = runBlocking {
+        fun `Should throw a HttpException when the returned JSON is invalid`(): Unit = runBlocking {
             val mockedResponse = MockResponse()
                 .setResponseCode(200)
                 .setBody("""{"invalid json"}""")
@@ -242,26 +240,28 @@ internal class ProvisioningServiceTest {
             server.enqueue(mockedResponse)
 
             // When/Then
-            val exception = shouldThrow<SerializationException> {
+            val exception = shouldThrow<HttpException> {
                 provisioningService.createIdentity(validNewDeviceEntity)
             }
             server.takeRequest()
 
+            exception.code shouldBe 500
             exception.message shouldStartWith "Unexpected JSON token at offset 15: Expected semicolon"
         }
 
         @Test
-        fun `Should throw a InterruptedIOException when the server does not respond`(): Unit = runBlocking {
+        fun `Should throw a HttpException when the server does not respond`(): Unit = runBlocking {
             val mockedResponse = MockResponse().setSocketPolicy(SocketPolicy.NO_RESPONSE)
 
             server.enqueue(mockedResponse)
 
             // When/Then
-            val result = shouldThrow<InterruptedIOException> {
+            val result = shouldThrow<HttpException> {
                 provisioningService.createIdentity(validNewDeviceEntity)
             }
             server.takeRequest()
 
+            result.code shouldBe 500
             result.message shouldBe "timeout"
         }
     }

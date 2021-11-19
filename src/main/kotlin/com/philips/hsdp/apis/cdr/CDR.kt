@@ -4,111 +4,326 @@
  */
 package com.philips.hsdp.apis.cdr
 
+import com.philips.hsdp.apis.cdr.domain.sdk.*
 import com.philips.hsdp.apis.support.HeaderParameter
 import com.philips.hsdp.apis.support.HttpClient
 import com.philips.hsdp.apis.support.logging.PlatformLoggerFactory
 import okhttp3.FormBody
 import okhttp3.HttpUrl.Companion.toHttpUrl
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.Request
+import okhttp3.RequestBody.Companion.toRequestBody
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import kotlin.coroutines.suspendCoroutine
 
-class CDR(private val cdrUrl: String, private val fhirVersion: String, private val httpClient: HttpClient) {
+/**
+ * Clinical Data Repository (CDR) service.
+ *
+ * Not yet implemented features :
+ * - use the content-type properly
+ * - getCapabilities
+ * - performBatchOperation
+ * - getHistory
+ * - Pagination
+ */
+class CDR(
+    private val cdrUrl: String,
+    fhirVersion: String,
+    mediaType: String = "application/fhir+json; charset=UTF-8",
+    private val httpClient: HttpClient
+) {
     private val logger = PlatformLoggerFactory.create(javaClass.simpleName, javaClass)
-    private val jsonMediaType = "application/fhir+json; charset=UTF-8"
+    private val versionedMediaType = "$mediaType; fhirVersion=$fhirVersion"
 
-    suspend fun read(
-        resourceType: String,
-        resourceId: String,
-        format: FormatParameter?  = null,
-        pretty: Boolean? = null,
-    ): CdrResponse =
+    /**
+     * Read the current state of a FHIR resource.
+     */
+    suspend fun read(readRequest: ReadRequest): ReadResponse =
+        read(prepareRequest(readRequest))
+
+    /**
+     * Read the state of a specific version of a FHIR resource.
+     */
+    suspend fun read(readVersionRequest: ReadVersionRequest): ReadResponse =
+        read(prepareRequest(readVersionRequest))
+
+    /**
+     * Search a FHIR resource type based on some filter criteria.
+     */
+    suspend fun search(searchRequest: SearchRequest, searchMethod: SearchMethod): SearchResponse =
+        search(prepareRequest(searchRequest, searchMethod))
+
+    /**
+     * Create a new FHIR resource with a server assigned ID
+     */
+    suspend fun create(createRequest: CreateRequest): CreateResponse =
+        create(prepareRequest(createRequest))
+
+    /**
+     * Delete a FHIR resource by ID.
+     */
+    suspend fun delete(deleteByIdRequest: DeleteByIdRequest): DeleteResponse =
+        delete(prepareRequest(deleteByIdRequest))
+
+    /**
+     * Delete a FHIR resource by query.
+     */
+    suspend fun delete(deleteByQueryRequest: DeleteByQueryRequest): DeleteResponse =
+        delete(prepareRequest(deleteByQueryRequest))
+
+    /**
+     * Update an existing FHIR resource by its ID (create if new).
+     */
+    suspend fun update(updateByIdRequest: UpdateByIdRequest): UpdateResponse =
+        update(prepareRequest(updateByIdRequest))
+
+    /**
+     * Update an existing resource by query (create if new)
+     */
+    suspend fun update(updateByQueryRequest: UpdateByQueryRequest): UpdateResponse =
+        update(prepareRequest(updateByQueryRequest))
+
+    /**
+     * Patch an existing FHIR resource by its ID.
+     */
+    suspend fun patch(patchByIdRequest: PatchByIdRequest): PatchResponse =
+        patch(prepareRequest(patchByIdRequest))
+
+    /**
+     * Patch an existing FHIR resource by query.
+     */
+    suspend fun patch(patchByQueryRequest: PatchByQueryRequest): PatchResponse =
+        patch(prepareRequest(patchByQueryRequest))
+
+
+    private suspend fun read(request: Request): ReadResponse =
         suspendCoroutine { continuation ->
-            val queryParameters = mutableListOf<Pair<String, Any>>()
-            format?.let { queryParameters.add("_format" to it.value) }
-            pretty?.let { queryParameters.add("_pretty" to it) }
-            val request = buildRequest(
-                pathSegments = "$resourceType/$resourceId",
-                queryParameters = queryParameters
-            )
-                .get()
-                .build()
-
             httpClient.performRequest(request, continuation, logger) { response ->
-                CdrResponse(
+                ReadResponse(
                     status = response.code,
-                    jsonRepresentation = requireNotNull(response.body?.string()),
-                    versionId = response.headers["ETag"]!!,
-                    lastModified = toIso8601DateFormat(response.headers["Last-Modified"]!!)
+                    body = requireNotNull(response.body?.string()),
+                    versionId = toVersionId(response.headers["ETag"]!!),
+                    lastModified = toIso8601DateFormat(response.headers["Last-Modified"]!!),
                 )
             }
         }
 
-    suspend fun vread(resourceType: String, resourceId: String, versionId: String, queryParameters: List<Pair<String, String>>?  = null): String =
+    private suspend fun search(request: Request): SearchResponse =
         suspendCoroutine { continuation ->
-            val request = buildRequest(
-                pathSegments = "$resourceType/$resourceId/_history/$versionId",
-                queryParameters = queryParameters
+            httpClient.performRequest(request, continuation, logger) { response ->
+                SearchResponse(
+                    status = response.code,
+                    body = requireNotNull(response.body?.string()),
+                )
+            }
+        }
+
+    private suspend fun create(request: Request): CreateResponse =
+        suspendCoroutine { continuation ->
+            httpClient.performRequest(request, continuation, logger) { response ->
+                CreateResponse(
+                    status = response.code,
+                    body = requireNotNull(response.body?.string()),
+                    location = response.headers["Location"]!!,
+                    versionId = toVersionId(response.headers["ETag"]!!),
+                    lastModified = toIso8601DateFormat(response.headers["Last-Modified"]!!),
+                )
+            }
+        }
+
+    private suspend fun delete(request: Request): DeleteResponse =
+        suspendCoroutine { continuation ->
+            httpClient.performRequest(request, continuation, logger) { response ->
+                DeleteResponse(
+                    status = response.code,
+                    body = response.body?.string(),
+                    versionId = response.headers["ETag"]?.let { toVersionId(it) },
+                )
+            }
+        }
+
+    private suspend fun update(request: Request): UpdateResponse =
+        suspendCoroutine { continuation ->
+            httpClient.performRequest(request, continuation, logger) { response ->
+                UpdateResponse(
+                    status = response.code,
+                    body = requireNotNull(response.body?.string()),
+                    location = response.headers["Location"],
+                    versionId = toVersionId(response.headers["ETag"]!!),
+                    lastModified = toIso8601DateFormat(response.headers["Last-Modified"]!!),
+                )
+            }
+        }
+
+    private suspend fun patch(request: Request): PatchResponse =
+        suspendCoroutine { continuation ->
+            httpClient.performRequest(request, continuation, logger) { response ->
+                PatchResponse(
+                    status = response.code,
+                    body = requireNotNull(response.body?.string()),
+                    location = response.headers["Location"],
+                    versionId = toVersionId(response.headers["ETag"]!!),
+                    lastModified = toIso8601DateFormat(response.headers["Last-Modified"]!!),
+                )
+            }
+        }
+
+    private fun prepareRequest(readRequest: ReadRequest): Request =
+        with(readRequest) {
+            buildRequest(
+                pathSegments = "$resourceType/$id",
+                queryParameters = listOfNotNull(
+                    format?.let { QueryParameter("_format", it.value) },
+                    pretty?.let { QueryParameter("_pretty", it.toString()) }
+                )
             )
                 .get()
                 .build()
+        }
 
-            httpClient.performRequest(request, continuation, logger) { response ->
-                requireNotNull(response.body?.string())
+    private fun prepareRequest(readVersionRequest: ReadVersionRequest): Request =
+        with(readVersionRequest) {
+            buildRequest(
+                pathSegments = "$resourceType/$id/_history/$versionId",
+                queryParameters = listOfNotNull(
+                    format?.let { QueryParameter("_format", it.value) },
+                )
+            )
+                .get()
+                .build()
+        }
+
+    private fun prepareRequest(searchRequest: SearchRequest, searchMethod: SearchMethod): Request =
+        with(searchRequest) {
+            when (searchMethod) {
+                SearchMethod.Get ->
+                    buildRequest(
+                        pathSegments = compartment?.let { (type, id) ->
+                            "$type/$id/$resourceType"
+                        } ?: resourceType,
+                        queryParameters = listOfNotNull(
+                            format?.let { QueryParameter("_format", it.value) },
+                        ).plus(queryParameters?.map { QueryParameter(it.name, it.value) } ?: emptyList()),
+                    )
+                        .get()
+                        .build()
+
+                SearchMethod.Post -> {
+                    val postBody = FormBody.Builder()
+                    format?.let { postBody.add("_format", it.value) }
+                    queryParameters?.let { parameters ->
+                        parameters.forEach { (name, value) -> postBody.add(name, value) }
+                    }
+
+                    buildRequest(
+                        pathSegments = compartment?.let {
+                            "${it.type}/${it.id}/$resourceType/_search"
+                        } ?: "$resourceType/_search",
+                    )
+                        .post(postBody.build())
+                        .build()
+                }
             }
         }
 
-    suspend fun searchViaGet(searchRequest: SearchRequest): CdrSearchResponse =
-        suspendCoroutine { continuation ->
-            with (searchRequest) {
-                val allParams = mutableListOf<Pair<String, String>>()
-                format?.let { allParams.add("_format" to it.value) }
-                queryParameters?.let { allParams.addAll(it) }
-                val request = buildRequest(
-                    pathSegments = (compartment?.let{ "${it.type}/$it.id/" } ?: "") + resourceType,
-                    queryParameters = allParams,
-                )
-                    .get()
-                    .build()
-
-                httpClient.performRequest(request, continuation, logger) { response ->
-                    CdrSearchResponse(
-                        status = response.code,
-                        jsonRepresentation = requireNotNull(response.body?.string()),
-                    )
-                }
-            }
+    private fun prepareRequest(createRequest: CreateRequest): Request =
+        with(createRequest) {
+            buildRequest(
+                pathSegments = resourceType,
+                headerParameters = listOfNotNull(
+                    condition?.let { HeaderParameter("If-None-Exists", it) },
+                    preference?.let { HeaderParameter("Prefer", "return=${it.value}") },
+                ),
+                queryParameters = listOfNotNull(format?.let { QueryParameter("_format", it.value) })
+            )
+                .post(body.toRequestBody(versionedMediaType.toMediaTypeOrNull()))
+                .build()
         }
 
-    suspend fun searchViaPost(searchRequest: SearchRequest): CdrSearchResponse =
-        suspendCoroutine { continuation ->
-            with(searchRequest) {
-                val postBody = FormBody.Builder()
-                format?.let { postBody.add("_format", it.value) }
-                queryParameters?.let { parameters ->
-                    parameters.forEach { (name, value) -> postBody.add(name, value) }
-                }
+    private fun prepareRequest(deleteByIdRequest: DeleteByIdRequest): Request =
+        with(deleteByIdRequest) {
+            buildRequest(
+                pathSegments = "$resourceType/$id",
+            )
+                .delete()
+                .build()
+        }
 
-                val request = buildRequest(
-                    pathSegments = (compartment?.let{ "${it.type}/$it.id/" } ?: "") + "$resourceType/_search",
-                )
-                    .post(postBody.build())
-                    .build()
+    private fun prepareRequest(deleteByQueryRequest: DeleteByQueryRequest): Request =
+        with(deleteByQueryRequest) {
+            buildRequest(
+                pathSegments = resourceType,
+                queryParameters = queryParameters
+            )
+                .delete()
+                .build()
+        }
 
-                httpClient.performRequest(request, continuation, logger) { response ->
-                    CdrSearchResponse(
-                        status = response.code,
-                        jsonRepresentation = requireNotNull(response.body?.string()),
-                    )
-                }
-            }
+    private fun prepareRequest(updateByIdRequest: UpdateByIdRequest): Request =
+        with(updateByIdRequest) {
+            buildRequest(
+                pathSegments = "$resourceType/$id",
+                headerParameters = listOfNotNull(
+                    forVersion?.let { HeaderParameter("If-Match", toETag(it)) },
+                    preference?.let { HeaderParameter("Prefer", "return=${it.value}") },
+                ),
+                queryParameters = listOfNotNull(format?.let { QueryParameter("_format", it.value) })
+            )
+                .put(body.toRequestBody(versionedMediaType.toMediaTypeOrNull()))
+                .build()
+        }
+
+    private fun prepareRequest(updateByQueryRequest: UpdateByQueryRequest): Request =
+        with(updateByQueryRequest) {
+            buildRequest(
+                pathSegments = resourceType,
+                headerParameters = listOfNotNull(
+                    forVersion?.let { HeaderParameter("If-Match", toETag(it)) },
+                    preference?.let { HeaderParameter("Prefer", "return=${it.value}") },
+                ),
+                queryParameters = listOfNotNull(
+                    format?.let { QueryParameter("_format", it.value) }
+                ) + queryParameters
+            )
+                .put(body.toRequestBody(versionedMediaType.toMediaTypeOrNull()))
+                .build()
+        }
+
+    private fun prepareRequest(patchByIdRequest: PatchByIdRequest): Request =
+        with(patchByIdRequest) {
+            buildRequest(
+                pathSegments = resourceType,
+                headerParameters = listOfNotNull(
+                    forVersion?.let { HeaderParameter("If-Match", toETag(it)) },
+                    preference?.let { HeaderParameter("Prefer", "return=${it.value}") },
+                ),
+                queryParameters = listOfNotNull(format?.let { QueryParameter("_format", it.value) })
+            )
+                .patch(body.toRequestBody(contentType.value.toMediaTypeOrNull()))
+                .build()
+        }
+
+    private fun prepareRequest(patchByQueryRequest: PatchByQueryRequest): Request =
+        with(patchByQueryRequest) {
+            buildRequest(
+                pathSegments = resourceType,
+                headerParameters = listOfNotNull(
+                    forVersion?.let { HeaderParameter("If-Match", toETag(it)) },
+                    preference?.let { HeaderParameter("Prefer", "return=${it.value}") },
+                ),
+                queryParameters = listOfNotNull(
+                    format?.let { QueryParameter("_format", it.value) }
+                ) + queryParameters
+            )
+                .patch(body.toRequestBody(contentType.value.toMediaTypeOrNull()))
+                .build()
         }
 
     private fun buildRequest(
         pathSegments: String,
         headerParameters: List<HeaderParameter> = emptyList(),
-        queryParameters: List<Pair<String, Any>>? = null
+        queryParameters: List<QueryParameter>? = null
     ): Request.Builder {
         require(httpClient.token.accessToken.isNotEmpty()) {
             "An access token is required"
@@ -118,7 +333,7 @@ class CDR(private val cdrUrl: String, private val fhirVersion: String, private v
         val urlBuilder = cdrUrl.toHttpUrl().newBuilder()
             .addPathSegments(pathSegments)
         queryParameters?.forEach { (key, value) ->
-            urlBuilder.addQueryParameter(key, value.toString())
+            urlBuilder.addQueryParameter(key, value)
         }
 
         val url = urlBuilder.build().toString()
@@ -126,7 +341,7 @@ class CDR(private val cdrUrl: String, private val fhirVersion: String, private v
             .url(url)
             .addHeader("Authorization", "Bearer ${httpClient.token.accessToken}")
             .addHeader("Api-Version", "1")
-//            .addHeader("Accept", "$jsonMediaType; fhirVersion=${fhirVersion}")
+            .addHeader("Accept", versionedMediaType)
         headerParameters.forEach { (name, value) ->
             requestBuilder.addHeader(name, value)
         }
@@ -145,4 +360,16 @@ class CDR(private val cdrUrl: String, private val fhirVersion: String, private v
         val date = LocalDateTime.parse(timestamp, DateTimeFormatter.ofPattern("EEE, dd LLL yyyy HH:mm:ss 'GMT'"))
         return date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'"))
     }
+
+    /**
+     * The returned ETag header contains a W/" prefix and a " postfix that do not belong to the version id.
+     */
+    private fun toVersionId(eTag: String) =
+        eTag.removePrefix("""W/"""").removeSuffix(""""""")
+
+    /**
+     * ETags have a W/" prefix and a " postfix appended to the version id.
+     */
+    private fun toETag(versionId: String) = """W/"$versionId""""
+
 }

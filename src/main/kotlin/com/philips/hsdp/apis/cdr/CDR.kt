@@ -13,6 +13,7 @@ import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
+import okhttp3.Response
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import kotlin.coroutines.suspendCoroutine
@@ -100,11 +101,13 @@ class CDR(
     private suspend fun read(request: Request): ReadResponse =
         suspendCoroutine { continuation ->
             httpClient.performRequest(request, continuation, logger) { response ->
+                val eTag = getMandatoryHeaderValue(response, "ETag")
+                val lastModified = getMandatoryHeaderValue(response, "Last-Modified")
                 ReadResponse(
                     status = response.code,
                     body = requireNotNull(response.body?.string()),
-                    versionId = toVersionId(response.headers["ETag"]!!),
-                    lastModified = toIso8601DateFormat(response.headers["Last-Modified"]!!),
+                    versionId = toVersionId(eTag),
+                    lastModified = toIso8601DateFormat(lastModified),
                 )
             }
         }
@@ -122,12 +125,15 @@ class CDR(
     private suspend fun create(request: Request): CreateResponse =
         suspendCoroutine { continuation ->
             httpClient.performRequest(request, continuation, logger) { response ->
+                val location = getMandatoryHeaderValue(response, "Location")
+                val eTag = getMandatoryHeaderValue(response, "ETag")
+                val lastModified = getMandatoryHeaderValue(response, "Last-Modified")
                 CreateResponse(
                     status = response.code,
                     body = requireNotNull(response.body?.string()),
-                    location = response.headers["Location"]!!,
-                    versionId = toVersionId(response.headers["ETag"]!!),
-                    lastModified = toIso8601DateFormat(response.headers["Last-Modified"]!!),
+                    location = location,
+                    versionId = toVersionId(eTag),
+                    lastModified = toIso8601DateFormat(lastModified),
                 )
             }
         }
@@ -146,12 +152,14 @@ class CDR(
     private suspend fun update(request: Request): UpdateResponse =
         suspendCoroutine { continuation ->
             httpClient.performRequest(request, continuation, logger) { response ->
+                val eTag = getMandatoryHeaderValue(response, "ETag")
+                val lastModified = getMandatoryHeaderValue(response, "Last-Modified")
                 UpdateResponse(
                     status = response.code,
                     body = requireNotNull(response.body?.string()),
                     location = response.headers["Location"],
-                    versionId = toVersionId(response.headers["ETag"]!!),
-                    lastModified = toIso8601DateFormat(response.headers["Last-Modified"]!!),
+                    versionId = toVersionId(eTag),
+                    lastModified = toIso8601DateFormat(lastModified),
                 )
             }
         }
@@ -159,12 +167,14 @@ class CDR(
     private suspend fun patch(request: Request): PatchResponse =
         suspendCoroutine { continuation ->
             httpClient.performRequest(request, continuation, logger) { response ->
+                val eTag = getMandatoryHeaderValue(response, "ETag")
+                val lastModified = getMandatoryHeaderValue(response, "Last-Modified")
                 PatchResponse(
                     status = response.code,
                     body = requireNotNull(response.body?.string()),
                     location = response.headers["Location"],
-                    versionId = toVersionId(response.headers["ETag"]!!),
-                    lastModified = toIso8601DateFormat(response.headers["Last-Modified"]!!),
+                    versionId = toVersionId(eTag),
+                    lastModified = toIso8601DateFormat(lastModified),
                 )
             }
         }
@@ -293,7 +303,7 @@ class CDR(
     private fun prepareRequest(patchByIdRequest: PatchByIdRequest): Request =
         with(patchByIdRequest) {
             buildRequest(
-                pathSegments = resourceType,
+                pathSegments = "$resourceType/$id",
                 headerParameters = listOfNotNull(
                     forVersion?.let { HeaderParameter("If-Match", toETag(it)) },
                     preference?.let { HeaderParameter("Prefer", "return=${it.value}") },
@@ -348,8 +358,13 @@ class CDR(
         return requestBuilder
     }
 
+    private fun getMandatoryHeaderValue(response: Response, headerName: String): String =
+        response.headers[headerName].also {
+            require(it != null) { "$headerName response header is missing" }
+        }!!
+
     /**
-     * Convert timestamps with format "Tue, 21 Sep 2021 17:11:39 UTC" to ISO8601 format ("2021-09-21T17:11:39.000Z")
+     * Convert timestamps with format "Tue, 21 Sep 2021 17:11:39 GMT" to ISO8601 format ("2021-09-21T17:11:39Z")
      *
      * NOTE: the returned timestamp in the header is on whole seconds, whereas the actual times in the resources are
      * in milliseconds. This can lead to confusion; same resource has different timestamp when obtained from response

@@ -2,6 +2,7 @@ plugins {
     kotlin("jvm") version "1.6.0"
     kotlin("plugin.serialization") version "1.6.0"
     kotlin("kapt") version "1.6.0"
+    id("org.jetbrains.kotlinx.kover") version "0.4.2"
     id("org.jetbrains.dokka") version "1.5.31"
     id("org.sonarqube") version "3.3"
     jacoco
@@ -31,6 +32,14 @@ tasks.withType<JavaCompile>().configureEach {
 
 tasks.getByName<Test>("test") {
     useJUnitPlatform()
+
+    extensions.configure(kotlinx.kover.api.KoverTaskExtension::class) {
+        isEnabled = true
+        excludes = listOf(
+            "com\\.philips\\.hsdp\\.apis\\..*\\.domain\\.sdk\\..*",
+            "com\\.philips\\.hsdp\\.apis\\..*\\.domain\\.hsdp\\..*",
+        )
+    }
 }
 
 dependencies {

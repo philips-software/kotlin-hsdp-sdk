@@ -27,7 +27,7 @@ open class CdrTestBase {
         start()
     }
     private val tokenRefresherMock = mockk<TokenRefresher>()
-    val httpClient = HttpClient(callTimeout = Duration.ofMillis(200)).apply {
+    val httpClient = HttpClient(callTimeout = Duration.ofMillis(300)).apply {
         tokenRefresher = tokenRefresherMock
     }
     protected val cdr = CDR(

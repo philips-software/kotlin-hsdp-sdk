@@ -36,7 +36,7 @@ open class IamUserTestBase {
     private val tokenRefresherMock = mockk<TokenRefresher>().apply {
         every { token } returns Token(accessToken = "22a34a6e-214c-4e3e-b85f-b4bbd1448613")
     }
-    val httpClient = HttpClient(callTimeout = Duration.ofMillis(200)).apply {
+    val httpClient = HttpClient(callTimeout = Duration.ofMillis(300)).apply {
         tokenRefresher = tokenRefresherMock
     }
     protected val iamUser = IamUser(

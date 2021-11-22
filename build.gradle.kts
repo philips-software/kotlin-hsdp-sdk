@@ -14,7 +14,7 @@ repositories {
     mavenCentral()
 }
 
-val okHttpVersion = "4.9.2"
+val okHttpVersion = "4.9.3"
 val kotestVersion = "4.6.3"
 val coroutineVersion = "1.5.2-native-mt"
 

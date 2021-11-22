@@ -150,9 +150,9 @@ class IamOAuth2Test {
             val exception = assertThrows<HttpException> {
                 iamOAuth2.login("user1", "secret1")
             }
-            server.takeRequest()
 
             // Then
+            server.takeRequest()
             exception.code shouldBe 500
             exception.message shouldStartWith "Unexpected JSON token at offset 2: Encountered an unknown key 'invalid'."
         }
@@ -207,9 +207,9 @@ class IamOAuth2Test {
             val exception = assertThrows<HttpException> {
                 iamOAuth2.login()
             }
-            server.takeRequest()
 
             // Then
+            server.takeRequest()
             exception.code shouldBe 500
             exception.message shouldStartWith "Unexpected JSON token at offset 2: Encountered an unknown key 'invalid'."
         }

@@ -26,9 +26,9 @@ class ChangeLoginIdTest : IamUserTestBase() {
 
         // When
         iamUser.changeLoginId(changeLogin)
-        val request = server.takeRequest()
 
         // Then
+        val request = server.takeRequest()
         request.requestUrl?.encodedPath shouldBe "/authorize/identity/User/${changeLogin.userId}/\$change-loginid"
         request.method shouldBe "POST"
         val headers = request.headers.toMultimap()
@@ -54,9 +54,9 @@ class ChangeLoginIdTest : IamUserTestBase() {
         val exception = shouldThrowExactly<HttpException> {
             iamUser.changeLoginId(changeLogin)
         }
-        server.takeRequest()
 
         // Then
+        server.takeRequest()
         exception.message shouldBe missingApiVersionHeaderResponse
     }
 

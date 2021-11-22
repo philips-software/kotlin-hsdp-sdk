@@ -32,9 +32,9 @@ class SearchUserTest : IamUserTestBase() {
 
         // When
         val result = iamUser.searchUser(loginId)
-        val request = server.takeRequest()
 
         // Then
+        val request = server.takeRequest()
         request.requestUrl?.encodedPath shouldBe "/authorize/identity/User"
         request.requestUrl?.encodedQuery shouldBe "userId=$loginId&profileType=all"
         request.method shouldBe "GET"
@@ -60,9 +60,9 @@ class SearchUserTest : IamUserTestBase() {
 
                     // When
                     iamUser.searchUser(loginId, profileType)
-                    val request = server.takeRequest()
 
                     // Then
+                    val request = server.takeRequest()
                     request.requestUrl?.encodedQuery shouldBe "userId=$loginId&profileType=${profileType.value}"
                 }
             }
@@ -79,9 +79,9 @@ class SearchUserTest : IamUserTestBase() {
 
         // When
         val result = iamUser.searchUser(loginId)
-        server.takeRequest()
 
         // Then
+        server.takeRequest()
         result should beNull()
     }
 
@@ -97,8 +97,8 @@ class SearchUserTest : IamUserTestBase() {
         val exception = shouldThrow<HttpException> {
             iamUser.searchUser(loginId)
         }
-        server.takeRequest()
 
+        server.takeRequest()
         exception.message shouldBe validHsdpResponse
     }
 
@@ -114,8 +114,8 @@ class SearchUserTest : IamUserTestBase() {
         val exception = shouldThrow<HttpException> {
             iamUser.searchUser(loginId)
         }
-        server.takeRequest()
 
+        server.takeRequest()
         exception.code shouldBe 500
         exception.message shouldStartWith "Unexpected JSON token at offset 14: Expected semicolon"
     }
@@ -130,8 +130,8 @@ class SearchUserTest : IamUserTestBase() {
         val exception = shouldThrow<HttpException> {
             iamUser.searchUser(loginId)
         }
-        server.takeRequest()
 
+        server.takeRequest()
         exception.code shouldBe 500
         exception.message shouldBe "timeout"
     }

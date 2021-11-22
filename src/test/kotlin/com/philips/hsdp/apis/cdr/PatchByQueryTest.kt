@@ -38,9 +38,9 @@ internal class PatchByQueryTest : CdrTestBase() {
 
         // When
         val result = cdr.patch(basicRequest)
-        val request = server.takeRequest()
 
         // Then
+        val request = server.takeRequest()
         request.requestUrl?.encodedPath shouldBe "/Patient"
         request.requestUrl?.encodedQuery shouldBe "id=abc"
         request.method shouldBe "PATCH"
@@ -67,9 +67,9 @@ internal class PatchByQueryTest : CdrTestBase() {
 
                 // When
                 cdr.patch(basicRequest.copy(contentType = contentType))
-                val request = server.takeRequest()
 
                 // Then
+                val request = server.takeRequest()
                 request.headers["Content-Type"] shouldBe expectedContentType
             }
         }
@@ -82,9 +82,9 @@ internal class PatchByQueryTest : CdrTestBase() {
 
         // When
         cdr.patch(basicRequest.copy(forVersion = "abc"))
-        val request = server.takeRequest()
 
         // Then
+        val request = server.takeRequest()
         request.headers["If-Match"] shouldBe """W/"abc""""
     }
 

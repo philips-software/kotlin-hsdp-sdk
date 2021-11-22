@@ -24,9 +24,9 @@ class SelfDeleteUserTest : IamUserTestBase() {
 
         // When
         iamUser.selfDeleteUser(userId)
-        val request = server.takeRequest()
 
         // Then
+        val request = server.takeRequest()
         request.requestUrl?.encodedPath shouldBe "/authorize/identity/User/$userId"
         request.method shouldBe "DELETE"
         request.headers.toMultimap() shouldContainAll mapOf(
@@ -48,9 +48,9 @@ class SelfDeleteUserTest : IamUserTestBase() {
         val exception = shouldThrowExactly<HttpException> {
             iamUser.selfDeleteUser(userId)
         }
-        server.takeRequest()
 
         // Then
+        server.takeRequest()
         exception.message shouldBe missingApiVersionHeaderResponse
     }
 }

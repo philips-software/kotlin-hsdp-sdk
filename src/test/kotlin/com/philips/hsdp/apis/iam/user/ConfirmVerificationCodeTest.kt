@@ -40,9 +40,9 @@ class ConfirmVerificationCodeTest : IamUserTestBase() {
 
         // When
         iamUser.confirmVerificationCode(verificationCode)
-        val request = server.takeRequest()
 
         // Then
+        val request = server.takeRequest()
         request.requestUrl?.encodedPath shouldBe "/authorize/identity/User/\$confirm-verification-code"
         request.method shouldBe "POST"
         val headers = request.headers.toMultimap()
@@ -68,9 +68,9 @@ class ConfirmVerificationCodeTest : IamUserTestBase() {
         val exception = shouldThrowExactly<HttpException> {
             iamUser.confirmVerificationCode(verificationCode)
         }
-        server.takeRequest()
 
         // Then
+        server.takeRequest()
         exception.message shouldBe missingApiVersionHeaderResponse
     }
 

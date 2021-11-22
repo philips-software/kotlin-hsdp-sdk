@@ -43,9 +43,9 @@ class RegisterUserAsAdminTest : IamUserTestBase() {
 
         // When
         val result = iamUser.registerUser(newUser)
-        val request = server.takeRequest()
 
         // Then
+        val request = server.takeRequest()
         request.requestUrl?.encodedPath shouldBe "/authorize/identity/User"
         request.method shouldBe "POST"
         val headers = request.headers.toMultimap()
@@ -86,9 +86,9 @@ class RegisterUserAsAdminTest : IamUserTestBase() {
 
         // When
         val result = iamUser.registerUser(newUser)
-        server.takeRequest()
 
         // Then
+        server.takeRequest()
         result shouldBe null
     }
 

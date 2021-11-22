@@ -36,9 +36,9 @@ internal class ReadTest : CdrTestBase() {
 
         // When
         val result = cdr.read(basicRequest)
-        val request = server.takeRequest()
 
         // Then
+        val request = server.takeRequest()
         request.requestUrl?.encodedPath shouldBe "/Patient/id"
         request.requestUrl?.encodedQuery should beNull()
         request.method shouldBe "GET"
@@ -66,9 +66,9 @@ internal class ReadTest : CdrTestBase() {
 
                 // When
                 cdr.read(basicRequest.copy(format = format))
-                val request = server.takeRequest()
 
                 // Then
+                val request = server.takeRequest()
                 request.requestUrl?.encodedQuery shouldBe expectedQueryParameter
             }
         }
@@ -86,9 +86,9 @@ internal class ReadTest : CdrTestBase() {
 
                 // When
                 cdr.read(basicRequest.copy(pretty = prettyFlag))
-                val request = server.takeRequest()
 
                 // Then
+                val request = server.takeRequest()
                 request.requestUrl?.encodedQuery shouldBe expectedQueryParameter
             }
         }
@@ -106,9 +106,9 @@ internal class ReadTest : CdrTestBase() {
         val exception = shouldThrowExactly<HttpException> {
             cdr.read(basicRequest)
         }
-        server.takeRequest()
 
         // Then
+        server.takeRequest()
         exception.code shouldBe 500
         exception.message shouldBe """{"some":"error"}"""
     }
@@ -126,9 +126,9 @@ internal class ReadTest : CdrTestBase() {
         val exception = shouldThrowExactly<HttpException> {
             cdr.read(basicRequest)
         }
-        server.takeRequest()
 
         // Then
+        server.takeRequest()
         exception.code shouldBe 500
         exception.message shouldBe "ETag response header is missing"
     }

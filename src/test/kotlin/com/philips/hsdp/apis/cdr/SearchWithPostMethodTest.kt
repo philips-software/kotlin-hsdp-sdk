@@ -36,9 +36,9 @@ internal class SearchWithPostMethodTest : CdrTestBase() {
 
         // When
         val result = cdr.search(basicRequest, searchMethod)
-        val request = server.takeRequest()
 
         // Then
+        val request = server.takeRequest()
         request.requestUrl?.encodedPath shouldBe "/Patient/_search"
         request.requestUrl?.encodedQuery should beNull()
         request.method shouldBe "POST"
@@ -58,9 +58,9 @@ internal class SearchWithPostMethodTest : CdrTestBase() {
 
         // When
         val result = cdr.search(basicRequest.copy(compartment = Compartment("ctype", "cid")), searchMethod)
-        val request = server.takeRequest()
 
         // Then
+        val request = server.takeRequest()
         request.requestUrl?.encodedPath shouldBe "/ctype/cid/Patient/_search"
         request.requestUrl?.encodedQuery should beNull()
         request.method shouldBe "POST"
@@ -89,9 +89,9 @@ internal class SearchWithPostMethodTest : CdrTestBase() {
 
                 // When
                 cdr.search(basicRequest.copy(format = format), searchMethod)
-                val request = server.takeRequest()
 
                 // Then
+                val request = server.takeRequest()
                 request.body.readUtf8() shouldBe expectedBody
             }
         }

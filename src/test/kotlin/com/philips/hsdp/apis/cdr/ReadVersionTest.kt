@@ -37,9 +37,9 @@ internal class ReadVersionTest : CdrTestBase() {
 
         // When
         val result = cdr.read(basicRequest)
-        val request = server.takeRequest()
 
         // Then
+        val request = server.takeRequest()
         request.requestUrl?.encodedPath shouldBe "/Patient/id/_history/versionId"
         request.requestUrl?.encodedQuery should beNull()
         request.method shouldBe "GET"
@@ -67,9 +67,9 @@ internal class ReadVersionTest : CdrTestBase() {
 
                 // When
                 cdr.read(basicRequest.copy(format = format))
-                val request = server.takeRequest()
 
                 // Then
+                val request = server.takeRequest()
                 request.requestUrl?.encodedQuery shouldBe expectedQueryParameter
             }
         }
@@ -87,9 +87,9 @@ internal class ReadVersionTest : CdrTestBase() {
         val exception = shouldThrowExactly<HttpException> {
             cdr.read(basicRequest)
         }
-        server.takeRequest()
 
         // Then
+        server.takeRequest()
         exception.code shouldBe 500
         exception.message shouldBe """{"some":"error"}"""
     }
@@ -107,9 +107,9 @@ internal class ReadVersionTest : CdrTestBase() {
         val exception = shouldThrowExactly<HttpException> {
             cdr.read(basicRequest)
         }
-        server.takeRequest()
 
         // Then
+        server.takeRequest()
         exception.code shouldBe 500
         exception.message shouldBe "ETag response header is missing"
     }
@@ -127,9 +127,9 @@ internal class ReadVersionTest : CdrTestBase() {
         val exception = shouldThrowExactly<HttpException> {
             cdr.read(basicRequest)
         }
-        server.takeRequest()
 
         // Then
+        server.takeRequest()
         exception.code shouldBe 500
         exception.message shouldBe "Last-Modified response header is missing"
     }

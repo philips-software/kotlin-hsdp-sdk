@@ -41,9 +41,9 @@ internal class CreateTest : CdrTestBase() {
 
         // When
         val result = cdr.create(basicRequest)
-        val request = server.takeRequest()
 
         // Then
+        val request = server.takeRequest()
         request.requestUrl?.encodedPath shouldBe "/Patient"
         request.requestUrl?.encodedQuery should beNull()
         request.method shouldBe "POST"
@@ -72,9 +72,9 @@ internal class CreateTest : CdrTestBase() {
 
                 // When
                 cdr.create(basicRequest.copy(format = format))
-                val request = server.takeRequest()
 
                 // Then
+                val request = server.takeRequest()
                 request.requestUrl?.encodedQuery shouldContain expectedQueryParameter
             }
         }
@@ -87,9 +87,9 @@ internal class CreateTest : CdrTestBase() {
 
         // When
         cdr.create(basicRequest.copy(condition = "some.field=abc"))
-        val request = server.takeRequest()
 
         // Then
+        val request = server.takeRequest()
         request.headers["If-None-Exists"] shouldBe "some.field=abc"
     }
 
@@ -106,9 +106,9 @@ internal class CreateTest : CdrTestBase() {
 
                 // When
                 cdr.create(basicRequest.copy(preference = preference))
-                val request = server.takeRequest()
 
                 // Then
+                val request = server.takeRequest()
                 request.headers["Prefer"] shouldBe expectedPreference
             }
         }

@@ -33,9 +33,9 @@ internal class DeleteByIdTest : CdrTestBase() {
 
         // When
         val result = cdr.delete(basicRequest)
-        val request = server.takeRequest()
 
         // Then
+        val request = server.takeRequest()
         request.requestUrl?.encodedPath shouldBe "/Patient/id"
         request.requestUrl?.encodedQuery should beNull()
         request.method shouldBe "DELETE"
@@ -59,9 +59,9 @@ internal class DeleteByIdTest : CdrTestBase() {
         val exception = shouldThrowExactly<HttpException> {
             cdr.delete(basicRequest)
         }
-        server.takeRequest()
 
         // Then
+        server.takeRequest()
         exception.code shouldBe 500
         exception.message shouldBe """{"some":"error"}"""
     }

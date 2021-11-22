@@ -36,9 +36,9 @@ internal class UpdateByQueryTest : CdrTestBase() {
 
         // When
         val result = cdr.update(basicRequest)
-        val request = server.takeRequest()
 
         // Then
+        val request = server.takeRequest()
         request.requestUrl?.encodedPath shouldBe "/Patient"
         request.requestUrl?.encodedQuery shouldBe "name=value"
         request.method shouldBe "PUT"
@@ -64,9 +64,9 @@ internal class UpdateByQueryTest : CdrTestBase() {
 
         // When
         val result = cdr.update(basicRequest)
-        server.takeRequest()
 
         // Then
+        server.takeRequest()
         result shouldBe UpdateResponse(200, """{"key":"value"}""", "location", "abc", "2021-09-21T17:11:39Z")
     }
 
@@ -77,9 +77,9 @@ internal class UpdateByQueryTest : CdrTestBase() {
 
         // When
         cdr.update(basicRequest.copy(forVersion = "abc"))
-        val request = server.takeRequest()
 
         // Then
+        val request = server.takeRequest()
         request.headers["If-Match"] shouldBe """W/"abc""""
     }
 
@@ -99,9 +99,9 @@ internal class UpdateByQueryTest : CdrTestBase() {
 
                 // When
                 cdr.update(basicRequest.copy(format = format))
-                val request = server.takeRequest()
 
                 // Then
+                val request = server.takeRequest()
                 request.requestUrl?.encodedQuery shouldContain expectedQueryParameter
             }
         }
@@ -120,9 +120,9 @@ internal class UpdateByQueryTest : CdrTestBase() {
 
                 // When
                 cdr.update(basicRequest.copy(preference = preference))
-                val request = server.takeRequest()
 
                 // Then
+                val request = server.takeRequest()
                 request.headers["Prefer"] shouldBe expectedPreference
             }
         }

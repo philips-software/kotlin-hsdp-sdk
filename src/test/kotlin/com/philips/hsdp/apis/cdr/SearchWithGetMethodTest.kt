@@ -36,9 +36,9 @@ internal class SearchWithGetMethodTest : CdrTestBase() {
 
         // When
         val result = cdr.search(basicRequest, searchMethod)
-        val request = server.takeRequest()
 
         // Then
+        val request = server.takeRequest()
         request.requestUrl?.encodedPath shouldBe "/Patient"
         request.requestUrl?.encodedQuery should beNull()
         request.method shouldBe "GET"
@@ -57,9 +57,9 @@ internal class SearchWithGetMethodTest : CdrTestBase() {
 
         // When
         val result = cdr.search(basicRequest.copy(compartment = Compartment("ctype", "cid")), searchMethod)
-        val request = server.takeRequest()
 
         // Then
+        val request = server.takeRequest()
         request.requestUrl?.encodedPath shouldBe "/ctype/cid/Patient"
         request.requestUrl?.encodedQuery should beNull()
         request.method shouldBe "GET"
@@ -87,9 +87,9 @@ internal class SearchWithGetMethodTest : CdrTestBase() {
 
                 // When
                 cdr.search(basicRequest.copy(format = format), searchMethod)
-                val request = server.takeRequest()
 
                 // Then
+                val request = server.takeRequest()
                 request.requestUrl?.encodedQuery shouldBe expectedQueryParameter
             }
         }

@@ -44,9 +44,9 @@ class SendVerificationCodeTest : IamUserTestBase() {
 
         // When
         iamUser.sendVerificationCode(verificationCode)
-        val request = server.takeRequest()
 
         // Then
+        val request = server.takeRequest()
         request.requestUrl?.encodedPath shouldBe "/authorize/identity/User/\$send-verification-code"
         request.method shouldBe "POST"
         val headers = request.headers.toMultimap()
@@ -73,9 +73,9 @@ class SendVerificationCodeTest : IamUserTestBase() {
         val exception = shouldThrowExactly<HttpException> {
             iamUser.sendVerificationCode(verificationCode)
         }
-        server.takeRequest()
 
         // Then
+        server.takeRequest()
         exception.message shouldBe missingApiVersionHeaderResponse
     }
 

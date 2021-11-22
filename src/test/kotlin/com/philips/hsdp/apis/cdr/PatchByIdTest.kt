@@ -39,9 +39,9 @@ internal class PatchByIdTest : CdrTestBase() {
 
         // When
         val result = cdr.patch(basicRequest)
-        val request = server.takeRequest()
 
         // Then
+        val request = server.takeRequest()
         request.requestUrl?.encodedPath shouldBe "/Patient/id"
         request.requestUrl?.encodedQuery should beNull()
         request.method shouldBe "PATCH"
@@ -68,9 +68,9 @@ internal class PatchByIdTest : CdrTestBase() {
 
                 // When
                 cdr.patch(basicRequest.copy(contentType = contentType))
-                val request = server.takeRequest()
 
                 // Then
+                val request = server.takeRequest()
                 request.headers["Content-Type"] shouldBe expectedContentType
             }
         }
@@ -83,9 +83,9 @@ internal class PatchByIdTest : CdrTestBase() {
 
         // When
         cdr.patch(basicRequest.copy(forVersion = "abc"))
-        val request = server.takeRequest()
 
         // Then
+        val request = server.takeRequest()
         request.headers["If-Match"] shouldBe """W/"abc""""
     }
 
@@ -105,9 +105,9 @@ internal class PatchByIdTest : CdrTestBase() {
 
                 // When
                 cdr.patch(basicRequest.copy(format = format))
-                val request = server.takeRequest()
 
                 // Then
+                val request = server.takeRequest()
                 request.requestUrl?.encodedQuery shouldBe expectedQueryParameter
             }
         }

@@ -199,9 +199,9 @@ internal class TDRTest {
 
                 // When
                 val result = tdr.getDataItems(DataItemQuery(OrganizationQuery("org1")))
-                val request = server.takeRequest()
 
                 // Then
+                val request = server.takeRequest()
                 request.requestUrl?.encodedPath shouldBe "/store/tdr/DataItem"
                 request.requestUrl?.encodedQuery shouldBe "organization=org1"
                 request.method shouldBe "GET"
@@ -226,9 +226,9 @@ internal class TDRTest {
             val exception = assertThrows<HttpException> {
                 tdr.getDataItems(DataItemQuery(OrganizationQuery(("org1"))))
             }
-            val request = server.takeRequest()
 
             // Then
+            val request = server.takeRequest()
             request.requestUrl?.encodedPath shouldBe "/store/tdr/DataItem"
             request.requestUrl?.encodedQuery shouldBe "organization=org1"
             request.method shouldBe "GET"
@@ -255,9 +255,9 @@ internal class TDRTest {
             val exception = assertThrows<HttpException> {
                 tdr.getDataItems(DataItemQuery(OrganizationQuery(("org1"))))
             }
-            val request = server.takeRequest()
 
             // Then
+            val request = server.takeRequest()
             request.requestUrl?.encodedPath shouldBe "/store/tdr/DataItem"
             request.requestUrl?.encodedQuery shouldBe "organization=org1"
             request.method shouldBe "GET"
@@ -294,8 +294,8 @@ internal class TDRTest {
             val exception = shouldThrow<HttpException> {
                 tdr.getDataItems(DataItemQuery(OrganizationQuery(("org1"))))
             }
-            server.takeRequest()
 
+            server.takeRequest()
             exception.code shouldBe 500
             exception.message shouldBe "timeout"
         }

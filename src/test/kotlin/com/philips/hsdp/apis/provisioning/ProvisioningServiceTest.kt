@@ -188,9 +188,9 @@ internal class ProvisioningServiceTest {
 
             // When
             val result = provisioningService.createIdentity(validNewDeviceEntity)
-            val request = server.takeRequest()
 
             // Then
+            val request = server.takeRequest()
             request.requestUrl?.encodedPath shouldBe "/\$create-identity"
             request.method shouldBe "POST"
             request.headers.toMultimap() shouldContainAll mapOf(
@@ -243,8 +243,8 @@ internal class ProvisioningServiceTest {
             val exception = shouldThrow<HttpException> {
                 provisioningService.createIdentity(validNewDeviceEntity)
             }
-            server.takeRequest()
 
+            server.takeRequest()
             exception.code shouldBe 500
             exception.message shouldStartWith "Unexpected JSON token at offset 15: Expected semicolon"
         }
@@ -259,8 +259,8 @@ internal class ProvisioningServiceTest {
             val result = shouldThrow<HttpException> {
                 provisioningService.createIdentity(validNewDeviceEntity)
             }
-            server.takeRequest()
 
+            server.takeRequest()
             result.code shouldBe 500
             result.message shouldBe "timeout"
         }

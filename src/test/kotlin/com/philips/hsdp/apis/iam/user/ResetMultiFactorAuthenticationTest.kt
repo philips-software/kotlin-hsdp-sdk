@@ -25,9 +25,9 @@ class ResetMultiFactorAuthenticationTest : IamUserTestBase() {
 
         // When
         iamUser.resetMultiFactorAuthentication(userId)
-        val request = server.takeRequest()
 
         // Then
+        val request = server.takeRequest()
         request.requestUrl?.encodedPath shouldBe "/authorize/identity/User/$userId/\$mfa-reset"
         request.method shouldBe "POST"
         val headers = request.headers.toMultimap()
@@ -53,9 +53,9 @@ class ResetMultiFactorAuthenticationTest : IamUserTestBase() {
         val exception = shouldThrowExactly<HttpException> {
             iamUser.resetMultiFactorAuthentication(userId)
         }
-        server.takeRequest()
 
         // Then
+        server.takeRequest()
         exception.message shouldBe missingApiVersionHeaderResponse
     }
 

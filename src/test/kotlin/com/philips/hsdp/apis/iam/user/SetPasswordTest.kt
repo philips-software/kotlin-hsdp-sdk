@@ -39,9 +39,9 @@ class SetPasswordTest : IamUserTestBase() {
 
         // When
         val result = iamUser.setPassword(setPassword)
-        val request = server.takeRequest()
 
         // Then
+        val request = server.takeRequest()
         request.requestUrl?.encodedPath shouldBe "/authorize/identity/User/\$set-password"
         request.method shouldBe "POST"
         val headers = request.headers.toMultimap()
@@ -69,9 +69,9 @@ class SetPasswordTest : IamUserTestBase() {
         val exception = shouldThrowExactly<HttpException> {
             iamUser.setPassword(setPassword)
         }
-        server.takeRequest()
 
         // Then
+        server.takeRequest()
         exception.message shouldBe missingApiVersionHeaderResponse
     }
 

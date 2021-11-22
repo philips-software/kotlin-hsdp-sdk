@@ -23,7 +23,6 @@ import io.kotest.matchers.string.shouldContain
 import io.kotest.matchers.string.shouldStartWith
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 import okhttp3.mockwebserver.MockResponse
@@ -32,7 +31,6 @@ import okhttp3.mockwebserver.SocketPolicy
 /* ktlint-disable no-wildcard-imports */
 import org.junit.jupiter.api.*
 /* ktlint-enable no-wildcard-imports */
-import java.io.InterruptedIOException
 import java.time.Duration
 import java.util.Base64
 import java.util.UUID
@@ -149,12 +147,13 @@ class IamOAuth2Test {
             server.enqueue(mockedResponse)
 
             // When
-            val exception = assertThrows<SerializationException> {
+            val exception = assertThrows<HttpException> {
                 iamOAuth2.login("user1", "secret1")
             }
-            server.takeRequest()
 
             // Then
+            server.takeRequest()
+            exception.code shouldBe 500
             exception.message shouldStartWith "Unexpected JSON token at offset 2: Encountered an unknown key 'invalid'."
         }
     }
@@ -205,12 +204,13 @@ class IamOAuth2Test {
             server.enqueue(mockedResponse)
 
             // When
-            val exception = assertThrows<SerializationException> {
+            val exception = assertThrows<HttpException> {
                 iamOAuth2.login()
             }
-            server.takeRequest()
 
             // Then
+            server.takeRequest()
+            exception.code shouldBe 500
             exception.message shouldStartWith "Unexpected JSON token at offset 2: Encountered an unknown key 'invalid'."
         }
     }
@@ -335,7 +335,7 @@ class IamOAuth2Test {
         }
 
         @Test
-        fun `Should throw SerializationException when returned body is not valid JSON`(): Unit = runBlocking {
+        fun `Should throw HttpException when returned body is not valid JSON`(): Unit = runBlocking {
             // Given
             val response = """{"invalid json"}"""
             val mockedResponse = MockResponse()
@@ -345,10 +345,11 @@ class IamOAuth2Test {
             server.enqueue(mockedResponse)
 
             // When
-            val exception = shouldThrow<SerializationException> {
+            val exception = shouldThrow<HttpException> {
                 iamOAuth2.refreshToken()
             }
 
+            exception.code shouldBe 500
             exception.message shouldStartWith "Unexpected JSON token at offset 14: Expected semicolon"
         }
     }
@@ -535,7 +536,7 @@ class IamOAuth2Test {
         }
 
         @Test
-        fun `Should throw a SerializationException when the server responds with invalid JSON`(): Unit = runBlocking {
+        fun `Should throw a HttpException when the server responds with invalid JSON`(): Unit = runBlocking {
             // Given
             val mockedResponse = MockResponse()
                 .setResponseCode(200)
@@ -544,11 +545,12 @@ class IamOAuth2Test {
             server.enqueue(mockedResponse)
 
             // When
-            val exception = shouldThrow<SerializationException> {
+            val exception = shouldThrow<HttpException> {
                 iamOAuth2.introspect(iamOAuth2.token.accessToken)
             }
 
             // Then
+            exception.code shouldBe 500
             exception.message shouldStartWith "Unexpected JSON token at offset 14: Expected semicolon"
         }
     }
@@ -629,7 +631,7 @@ class IamOAuth2Test {
         }
 
         @Test
-        fun `Should throw a SerializationException when the server responds with invalid JSON`(): Unit = runBlocking {
+        fun `Should throw a HttpException when the server responds with invalid JSON`(): Unit = runBlocking {
             // Given
             val mockedResponse = MockResponse()
                 .setResponseCode(200)
@@ -638,27 +640,29 @@ class IamOAuth2Test {
             server.enqueue(mockedResponse)
 
             // When
-            val exception = shouldThrow<SerializationException> {
+            val exception = shouldThrow<HttpException> {
                 iamOAuth2.userInfo()
             }
 
             // Then
+            exception.code shouldBe 500
             exception.message shouldStartWith "Unexpected JSON token at offset 14: Expected semicolon"
         }
 
         @Test
-        fun `Should throw a InterruptedIOException when the server does not respond`(): Unit = runBlocking {
+        fun `Should throw a HttpException when the server does not respond`(): Unit = runBlocking {
             // Given
             val mockedResponse = MockResponse().setSocketPolicy(SocketPolicy.NO_RESPONSE)
 
             server.enqueue(mockedResponse)
 
             // When/Then
-            val exception = shouldThrow<InterruptedIOException> {
+            val exception = shouldThrow<HttpException> {
                 iamOAuth2.userInfo()
             }
             server.takeRequest()
 
+            exception.code shouldBe 500
             exception.message shouldBe "timeout"
         }
     }

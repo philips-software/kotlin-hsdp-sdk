@@ -25,9 +25,9 @@ class UnlockUserTest : IamUserTestBase() {
 
         // When
         iamUser.unlockUser(userId)
-        val request = server.takeRequest()
 
         // Then
+        val request = server.takeRequest()
         request.requestUrl?.encodedPath shouldBe "/authorize/identity/User/$userId/\$unlock"
         request.method shouldBe "POST"
         val headers = request.headers.toMultimap()
@@ -53,9 +53,9 @@ class UnlockUserTest : IamUserTestBase() {
         val exception = shouldThrowExactly<HttpException> {
             iamUser.unlockUser(userId)
         }
-        server.takeRequest()
 
         // Then
+        server.takeRequest()
         exception.message shouldBe missingApiVersionHeaderResponse
     }
 

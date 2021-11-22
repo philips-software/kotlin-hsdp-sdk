@@ -26,9 +26,9 @@ class ForceResetPasswordTest : IamUserTestBase() {
 
         // When
         iamUser.forceResetPassword(forceResetPassword)
-        val request = server.takeRequest()
 
         // Then
+        val request = server.takeRequest()
         request.requestUrl?.encodedPath shouldBe "/authorize/identity/User/\$force-reset-password"
         request.method shouldBe "POST"
         request.headers.toMultimap() shouldContainAll mapOf(
@@ -53,9 +53,9 @@ class ForceResetPasswordTest : IamUserTestBase() {
         val exception = shouldThrowExactly<HttpException> {
             iamUser.forceResetPassword(forceResetPassword)
         }
-        server.takeRequest()
 
         // Then
+        server.takeRequest()
         exception.message shouldBe missingApiVersionHeaderResponse
     }
 

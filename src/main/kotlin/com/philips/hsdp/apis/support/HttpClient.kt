@@ -89,7 +89,9 @@ class HttpClient(callTimeout: Duration = Duration.ofSeconds(5)) : Authenticator 
             .newCall(request)
             .enqueue(object : Callback {
                 override fun onFailure(call: Call, e: IOException) {
-                    continuation.resumeWithException(e)
+                    continuation.resumeWithException(
+                        HttpException(500, e.message ?: "Failure details not available.")
+                    )
                 }
 
                 override fun onResponse(call: Call, response: Response) {
@@ -106,10 +108,14 @@ class HttpClient(callTimeout: Duration = Duration.ofSeconds(5)) : Authenticator 
                             continuation.resume(result)
                         } catch (e: Exception) {
                             logger.error { "Request failed: ${e.message}" }
-                            continuation.resumeWithException(e)
+                            continuation.resumeWithException(
+                                HttpException(500, e.message ?: "Failure details not available.")
+                            )
                         }
                     } else {
-                        continuation.resumeWithException(HttpException(response.code, response.body?.string() ?: ""))
+                        continuation.resumeWithException(
+                            HttpException(response.code, response.body?.string() ?: "")
+                        )
                     }
                 }
             })

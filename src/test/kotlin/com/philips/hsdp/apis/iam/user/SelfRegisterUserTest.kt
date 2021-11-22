@@ -43,9 +43,9 @@ class SelfRegisterUserTest : IamUserTestBase() {
 
         // When
         val result = iamUser.registerUser(newUser)
-        val request = server.takeRequest()
 
         // Then
+        val request = server.takeRequest()
         request.requestUrl?.encodedPath shouldBe "/authorize/identity/User"
         request.method shouldBe "POST"
         val headers = request.headers.toMultimap()
@@ -85,9 +85,9 @@ class SelfRegisterUserTest : IamUserTestBase() {
 
         // When
         val result = iamUser.registerUser(newUser)
-        server.takeRequest()
 
         // Then
+        server.takeRequest()
         result shouldBe null
     }
 
@@ -104,9 +104,9 @@ class SelfRegisterUserTest : IamUserTestBase() {
         val exception = shouldThrowExactly<HttpException> {
             iamUser.registerUser(newUser)
         }
-        server.takeRequest()
 
         // Then
+        server.takeRequest()
         exception.message shouldBe missingApiVersionHeaderResponse
     }
 
@@ -122,9 +122,9 @@ class SelfRegisterUserTest : IamUserTestBase() {
         val exception = shouldThrowExactly<HttpException> {
             iamUser.registerUser(newUser)
         }
-        server.takeRequest()
 
         // Then
+        server.takeRequest()
         exception.code shouldBe 415
         exception.message shouldBe ""
     }

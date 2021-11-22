@@ -25,7 +25,6 @@ import io.kotest.matchers.string.shouldStartWith
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
@@ -36,7 +35,6 @@ import okhttp3.mockwebserver.SocketPolicy
 /* ktlint-disable no-wildcard-imports */
 import org.junit.jupiter.api.*
 /* ktlint-enable no-wildcard-imports */
-import java.io.InterruptedIOException
 import java.time.Duration
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -201,9 +199,9 @@ internal class TDRTest {
 
                 // When
                 val result = tdr.getDataItems(DataItemQuery(OrganizationQuery("org1")))
-                val request = server.takeRequest()
 
                 // Then
+                val request = server.takeRequest()
                 request.requestUrl?.encodedPath shouldBe "/store/tdr/DataItem"
                 request.requestUrl?.encodedQuery shouldBe "organization=org1"
                 request.method shouldBe "GET"
@@ -228,9 +226,9 @@ internal class TDRTest {
             val exception = assertThrows<HttpException> {
                 tdr.getDataItems(DataItemQuery(OrganizationQuery(("org1"))))
             }
-            val request = server.takeRequest()
 
             // Then
+            val request = server.takeRequest()
             request.requestUrl?.encodedPath shouldBe "/store/tdr/DataItem"
             request.requestUrl?.encodedQuery shouldBe "organization=org1"
             request.method shouldBe "GET"
@@ -254,12 +252,12 @@ internal class TDRTest {
             server.enqueue(mockedResponse)
 
             // When
-            val exception = assertThrows<SerializationException> {
+            val exception = assertThrows<HttpException> {
                 tdr.getDataItems(DataItemQuery(OrganizationQuery(("org1"))))
             }
-            val request = server.takeRequest()
 
             // Then
+            val request = server.takeRequest()
             request.requestUrl?.encodedPath shouldBe "/store/tdr/DataItem"
             request.requestUrl?.encodedQuery shouldBe "organization=org1"
             request.method shouldBe "GET"
@@ -268,6 +266,7 @@ internal class TDRTest {
                 "api-version" to listOf("5"),
                 "accept" to listOf("application/json; charset=utf-8"),
             )
+            exception.code shouldBe 500
             exception.message shouldStartWith "Unexpected JSON token at offset 2: Encountered an unknown key 'invalid'."
         }
 
@@ -286,17 +285,18 @@ internal class TDRTest {
         }
 
         @Test
-        fun `Should throw a InterruptedIOException when the server does not respond`(): Unit = runBlocking {
+        fun `Should throw a HttpException when the server does not respond`(): Unit = runBlocking {
             val mockedResponse = MockResponse().setSocketPolicy(SocketPolicy.NO_RESPONSE)
 
             server.enqueue(mockedResponse)
 
             // When/Then
-            val exception = shouldThrow<InterruptedIOException> {
+            val exception = shouldThrow<HttpException> {
                 tdr.getDataItems(DataItemQuery(OrganizationQuery(("org1"))))
             }
-            server.takeRequest()
 
+            server.takeRequest()
+            exception.code shouldBe 500
             exception.message shouldBe "timeout"
         }
     }
@@ -650,12 +650,13 @@ internal class TDRTest {
             server.enqueue(mockedResponse)
 
             // Then
-            val exception = shouldThrow<SerializationException> {
+            val exception = shouldThrow<HttpException> {
                 // When
                 tdr.storeDataItems(newDataItems)
             }
             server.takeRequest()
 
+            exception.code shouldBe 500
             exception.message shouldStartWith "Unexpected JSON token at offset 14: Expected semicolon"
         }
     }
@@ -904,7 +905,7 @@ internal class TDRTest {
             server.enqueue(mockedResponse)
 
             // When
-            val exception = assertThrows<SerializationException> {
+            val exception = assertThrows<HttpException> {
                 tdr.getContracts(ContractQuery(organizationQuery = OrganizationQuery("org1")))
             }
             val request = server.takeRequest()
@@ -917,6 +918,7 @@ internal class TDRTest {
                 "api-version" to listOf("5"),
                 "accept" to listOf("application/json; charset=utf-8"),
             )
+            exception.code shouldBe 500
             exception.message shouldStartWith "Unexpected JSON token at offset 2: Encountered an unknown key 'invalid'."
         }
     }

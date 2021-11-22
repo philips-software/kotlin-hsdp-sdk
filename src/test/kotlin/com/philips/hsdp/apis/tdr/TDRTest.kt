@@ -50,7 +50,7 @@ internal class TDRTest {
         start()
     }
     private val tokenRefresherMock = mockk<TokenRefresher>()
-    val httpClient = HttpClient(callTimeout = Duration.ofMillis(200)).apply {
+    val httpClient = HttpClient(callTimeout = Duration.ofMillis(300)).apply {
         tokenRefresher = tokenRefresherMock
     }
     private val tdr = TDR(server.url("").toString(), httpClient)

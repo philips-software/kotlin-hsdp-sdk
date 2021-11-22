@@ -43,7 +43,7 @@ internal class ProvisioningServiceTest {
         start()
     }
     private val tokenRefresherMock = mockk<TokenRefresher>()
-    val httpClient = HttpClient(callTimeout = Duration.ofMillis(200)).apply {
+    val httpClient = HttpClient(callTimeout = Duration.ofMillis(300)).apply {
         tokenRefresher = tokenRefresherMock
     }
     private val provisioningService = ProvisioningService(server.url("").toString(), httpClient)

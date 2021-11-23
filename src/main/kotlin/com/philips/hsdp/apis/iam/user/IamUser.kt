@@ -7,7 +7,6 @@ package com.philips.hsdp.apis.iam.user
 import com.philips.hsdp.apis.iam.oauth2.IamOAuth2
 import com.philips.hsdp.apis.iam.user.domain.conversion.*
 import com.philips.hsdp.apis.iam.user.domain.hsdp.Challenges
-import com.philips.hsdp.apis.iam.user.domain.hsdp.OperationOutcome
 import com.philips.hsdp.apis.iam.user.domain.hsdp.PasswordPolicy
 import com.philips.hsdp.apis.iam.user.domain.hsdp.Users
 import com.philips.hsdp.apis.iam.user.domain.sdk.*

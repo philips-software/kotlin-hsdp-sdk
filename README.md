@@ -300,6 +300,17 @@ The current implementation covers only a subset of HSDP APIs. Additional functio
       - [ ] Enables a user to delegate access to another user to act on its behalf
       - [ ] Revoke delegation granted to given delegatee
   - [ ] Policy Management
+- [x] Clinical Data Repository (CDR)
+  - [x] Read
+  - [x] VRead (versioned read)
+  - [x] Create
+  - [x] Update
+  - [x] Patch
+  - [x] Delete
+  - [ ] Get History
+  - [ ] Batch operation
+  - [ ] Get Capabilities
+  - [ ] Pagination
 - [x] Telemetry Data Repository (TDR)
   - [x] Contracts
   - [x] Data Items

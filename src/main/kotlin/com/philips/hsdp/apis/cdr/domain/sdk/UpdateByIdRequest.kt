@@ -35,6 +35,12 @@ data class UpdateByIdRequest(
     val forVersion: String? = null,
 
     /**
+     * If set to true, the resource is validated against the base StructureDefinition
+     * and any profiles declared in meta.profile
+     */
+    val validate: Boolean? = null,
+
+    /**
      * Optional parameter to choose the response MIME type for clients that cannot modify the 'Accept' header.
      * Overrides the value given in the 'Accept' header.
      */

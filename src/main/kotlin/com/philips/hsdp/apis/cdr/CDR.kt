@@ -22,11 +22,9 @@ import kotlin.coroutines.suspendCoroutine
  * Clinical Data Repository (CDR) service.
  *
  * Not yet implemented features :
- * - use the content-type properly
  * - getCapabilities
  * - performBatchOperation
  * - getHistory
- * - Pagination
  */
 class CDR(
     private val cdrUrl: String,
@@ -101,8 +99,8 @@ class CDR(
     private suspend fun read(request: Request): ReadResponse =
         suspendCoroutine { continuation ->
             httpClient.performRequest(request, continuation, logger) { response ->
-                val eTag = getMandatoryHeaderValue(response, "ETag")
-                val lastModified = getMandatoryHeaderValue(response, "Last-Modified")
+                val eTag = getMandatoryHeaderValue(response, eTagHeader)
+                val lastModified = getMandatoryHeaderValue(response, lastModifiedHeader)
                 ReadResponse(
                     status = response.code,
                     body = requireNotNull(response.body?.string()),
@@ -125,9 +123,9 @@ class CDR(
     private suspend fun create(request: Request): CreateResponse =
         suspendCoroutine { continuation ->
             httpClient.performRequest(request, continuation, logger) { response ->
-                val location = getMandatoryHeaderValue(response, "Location")
-                val eTag = getMandatoryHeaderValue(response, "ETag")
-                val lastModified = getMandatoryHeaderValue(response, "Last-Modified")
+                val location = getMandatoryHeaderValue(response, locationHeader)
+                val eTag = getMandatoryHeaderValue(response, eTagHeader)
+                val lastModified = getMandatoryHeaderValue(response, lastModifiedHeader)
                 CreateResponse(
                     status = response.code,
                     body = requireNotNull(response.body?.string()),
@@ -144,7 +142,7 @@ class CDR(
                 DeleteResponse(
                     status = response.code,
                     body = response.body?.string(),
-                    versionId = response.headers["ETag"]?.let { toVersionId(it) },
+                    versionId = response.headers[eTagHeader]?.let { toVersionId(it) },
                 )
             }
         }
@@ -152,12 +150,12 @@ class CDR(
     private suspend fun update(request: Request): UpdateResponse =
         suspendCoroutine { continuation ->
             httpClient.performRequest(request, continuation, logger) { response ->
-                val eTag = getMandatoryHeaderValue(response, "ETag")
-                val lastModified = getMandatoryHeaderValue(response, "Last-Modified")
+                val eTag = getMandatoryHeaderValue(response, eTagHeader)
+                val lastModified = getMandatoryHeaderValue(response, lastModifiedHeader)
                 UpdateResponse(
                     status = response.code,
                     body = requireNotNull(response.body?.string()),
-                    location = response.headers["Location"],
+                    location = response.headers[locationHeader],
                     versionId = toVersionId(eTag),
                     lastModified = toIso8601DateFormat(lastModified),
                 )
@@ -167,12 +165,12 @@ class CDR(
     private suspend fun patch(request: Request): PatchResponse =
         suspendCoroutine { continuation ->
             httpClient.performRequest(request, continuation, logger) { response ->
-                val eTag = getMandatoryHeaderValue(response, "ETag")
-                val lastModified = getMandatoryHeaderValue(response, "Last-Modified")
+                val eTag = getMandatoryHeaderValue(response, eTagHeader)
+                val lastModified = getMandatoryHeaderValue(response, lastModifiedHeader)
                 PatchResponse(
                     status = response.code,
                     body = requireNotNull(response.body?.string()),
-                    location = response.headers["Location"],
+                    location = response.headers[locationHeader],
                     versionId = toVersionId(eTag),
                     lastModified = toIso8601DateFormat(lastModified),
                 )
@@ -183,10 +181,14 @@ class CDR(
         with(readRequest) {
             buildRequest(
                 pathSegments = "$resourceType/$id",
+                headerParameters = listOfNotNull(
+                    modifiedSinceTimestamp?.let { HeaderParameter(ifModifiedSinceHeader, it) },
+                    modifiedSinceVersion?.let { HeaderParameter(ifNoneMatchHeader, toETag(it)) }
+                ),
                 queryParameters = listOfNotNull(
-                    format?.let { QueryParameter("_format", it.value) },
-                    pretty?.let { QueryParameter("_pretty", it.toString()) }
-                )
+                    format?.let { QueryParameter(formatQuery, it.value) },
+                    pretty?.let { QueryParameter(prettyQuery, it.toString()) },
+                ),
             )
                 .get()
                 .build()
@@ -197,7 +199,7 @@ class CDR(
             buildRequest(
                 pathSegments = "$resourceType/$id/_history/$versionId",
                 queryParameters = listOfNotNull(
-                    format?.let { QueryParameter("_format", it.value) },
+                    format?.let { QueryParameter(formatQuery, it.value) },
                 )
             )
                 .get()
@@ -213,7 +215,7 @@ class CDR(
                             "$type/$id/$resourceType"
                         } ?: resourceType,
                         queryParameters = listOfNotNull(
-                            format?.let { QueryParameter("_format", it.value) },
+                            format?.let { QueryParameter(formatQuery, it.value) },
                         ).plus(queryParameters?.map { QueryParameter(it.name, it.value) } ?: emptyList()),
                     )
                         .get()
@@ -221,7 +223,7 @@ class CDR(
 
                 SearchMethod.Post -> {
                     val postBody = FormBody.Builder()
-                    format?.let { postBody.add("_format", it.value) }
+                    format?.let { postBody.add(formatQuery, it.value) }
                     queryParameters?.let { parameters ->
                         parameters.forEach { (name, value) -> postBody.add(name, value) }
                     }
@@ -242,10 +244,11 @@ class CDR(
             buildRequest(
                 pathSegments = resourceType,
                 headerParameters = listOfNotNull(
-                    condition?.let { HeaderParameter("If-None-Exists", it) },
-                    preference?.let { HeaderParameter("Prefer", "return=${it.value}") },
+                    validate?.let { HeaderParameter(xValidateResourceHeader, it.toString()) },
+                    condition?.let { HeaderParameter(ifNoneExistsHeader, it) },
+                    preference?.let { HeaderParameter(preferHeader, "return=${it.value}") },
                 ),
-                queryParameters = listOfNotNull(format?.let { QueryParameter("_format", it.value) })
+                queryParameters = listOfNotNull(format?.let { QueryParameter(formatQuery, it.value) })
             )
                 .post(body.toRequestBody(versionedMediaType.toMediaTypeOrNull()))
                 .build()
@@ -275,10 +278,11 @@ class CDR(
             buildRequest(
                 pathSegments = "$resourceType/$id",
                 headerParameters = listOfNotNull(
-                    forVersion?.let { HeaderParameter("If-Match", toETag(it)) },
-                    preference?.let { HeaderParameter("Prefer", "return=${it.value}") },
+                    forVersion?.let { HeaderParameter(ifMatchHeader, toETag(it)) },
+                    validate?.let { HeaderParameter(xValidateResourceHeader, it.toString()) },
+                    preference?.let { HeaderParameter(preferHeader, "return=${it.value}") },
                 ),
-                queryParameters = listOfNotNull(format?.let { QueryParameter("_format", it.value) })
+                queryParameters = listOfNotNull(format?.let { QueryParameter(formatQuery, it.value) })
             )
                 .put(body.toRequestBody(versionedMediaType.toMediaTypeOrNull()))
                 .build()
@@ -289,11 +293,11 @@ class CDR(
             buildRequest(
                 pathSegments = resourceType,
                 headerParameters = listOfNotNull(
-                    forVersion?.let { HeaderParameter("If-Match", toETag(it)) },
-                    preference?.let { HeaderParameter("Prefer", "return=${it.value}") },
+                    forVersion?.let { HeaderParameter(ifMatchHeader, toETag(it)) },
+                    preference?.let { HeaderParameter(preferHeader, "return=${it.value}") },
                 ),
                 queryParameters = listOfNotNull(
-                    format?.let { QueryParameter("_format", it.value) }
+                    format?.let { QueryParameter(formatQuery, it.value) }
                 ) + queryParameters
             )
                 .put(body.toRequestBody(versionedMediaType.toMediaTypeOrNull()))
@@ -305,10 +309,11 @@ class CDR(
             buildRequest(
                 pathSegments = "$resourceType/$id",
                 headerParameters = listOfNotNull(
-                    forVersion?.let { HeaderParameter("If-Match", toETag(it)) },
-                    preference?.let { HeaderParameter("Prefer", "return=${it.value}") },
+                    forVersion?.let { HeaderParameter(ifMatchHeader, toETag(it)) },
+                    validate?.let { HeaderParameter(xValidateResourceHeader, it.toString()) },
+                    preference?.let { HeaderParameter(preferHeader, "return=${it.value}") },
                 ),
-                queryParameters = listOfNotNull(format?.let { QueryParameter("_format", it.value) })
+                queryParameters = listOfNotNull(format?.let { QueryParameter(formatQuery, it.value) })
             )
                 .patch(body.toRequestBody(contentType.value.toMediaTypeOrNull()))
                 .build()
@@ -319,16 +324,28 @@ class CDR(
             buildRequest(
                 pathSegments = resourceType,
                 headerParameters = listOfNotNull(
-                    forVersion?.let { HeaderParameter("If-Match", toETag(it)) },
-                    preference?.let { HeaderParameter("Prefer", "return=${it.value}") },
+                    forVersion?.let { HeaderParameter(ifMatchHeader, toETag(it)) },
+                    preference?.let { HeaderParameter(preferHeader, "return=${it.value}") },
                 ),
                 queryParameters = listOfNotNull(
-                    format?.let { QueryParameter("_format", it.value) }
+                    format?.let { QueryParameter(formatQuery, it.value) }
                 ) + queryParameters
             )
                 .patch(body.toRequestBody(contentType.value.toMediaTypeOrNull()))
                 .build()
         }
+
+    private val eTagHeader = "ETag"
+    private val lastModifiedHeader = "Last-Modified"
+    private val locationHeader = "Location"
+    private val ifModifiedSinceHeader = "If-Modified-Since"
+    private val ifNoneMatchHeader = "If-None-Match"
+    private val xValidateResourceHeader = "X-validate-resource"
+    private val ifNoneExistsHeader = "If-None-Exists"
+    private val preferHeader = "Prefer"
+    private val ifMatchHeader = "If-Match"
+    private val formatQuery = "_format"
+    private val prettyQuery = "_pretty"
 
     private fun buildRequest(
         pathSegments: String,

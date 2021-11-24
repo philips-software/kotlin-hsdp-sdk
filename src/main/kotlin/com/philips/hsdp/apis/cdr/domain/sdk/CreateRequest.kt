@@ -24,13 +24,19 @@ data class CreateRequest(
     val body: String,
 
     /**
+     * If set to false, the resource validation against the base StructureDefinition
+     * and any profiles declared in meta.profile is skipped. Default value is true.
+     */
+    val validate: Boolean? = null,
+
+    /**
      * Optional parameter to choose the response MIME type for clients that cannot modify the Accept_header.
      * Overrides the value given in the 'Accept' header.
      */
     val format: FormatParameter? = null,
 
     /**
-     * Condition that must be satisfied to create the resource.
+     * Indicates that the resource is only created if the condition specified in this header is not met.
      * If defined, will lead to an 'If-None-Exists' header with given expression.
      */
     val condition: String? = null,

@@ -76,6 +76,26 @@ internal class PatchByIdTest : CdrTestBase() {
         }
     }
 
+    @TestFactory
+    fun `Validate value - if set - should be propagated to headers`() = listOf(
+        false to "false",
+        true to "true",
+    ).map { (validate, expectedHeaderValue) ->
+        DynamicTest.dynamicTest("Value $validate should lead to header parameter $expectedHeaderValue") {
+            runBlocking {
+                // Given
+                server.enqueue(mockSuccessResponse)
+
+                // When
+                cdr.patch(basicRequest.copy(validate = validate))
+
+                // Then
+                val request = server.takeRequest()
+                request.headers["X-validate-resource"] shouldBe expectedHeaderValue
+            }
+        }
+    }
+
     @Test
     fun `ForVersion value should be propagated to the request headers`(): Unit = runBlocking {
         // Given

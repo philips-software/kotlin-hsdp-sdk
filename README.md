@@ -310,7 +310,6 @@ The current implementation covers only a subset of HSDP APIs. Additional functio
   - [ ] Get History
   - [ ] Batch operation
   - [ ] Get Capabilities
-  - [ ] Pagination
 - [x] Telemetry Data Repository (TDR)
   - [x] Contracts
   - [x] Data Items

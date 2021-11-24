@@ -57,6 +57,26 @@ internal class CreateTest : CdrTestBase() {
     }
 
     @TestFactory
+    fun `Validate value - if set - should be propagated to headers`() = listOf(
+        false to "false",
+        true to "true",
+    ).map { (validate, expectedHeaderValue) ->
+        DynamicTest.dynamicTest("Value $validate should lead to header parameter $expectedHeaderValue") {
+            runBlocking {
+                // Given
+                server.enqueue(mockSuccessResponse)
+
+                // When
+                cdr.create(basicRequest.copy(validate = validate))
+
+                // Then
+                val request = server.takeRequest()
+                request.headers["X-validate-resource"] shouldBe expectedHeaderValue
+            }
+        }
+    }
+
+    @TestFactory
     fun `FormatParameter value should be propagated to query parameters`() = listOf(
         FormatParameter.Json to "_format=json",
         FormatParameter.ApplicationJson to "_format=application%2Fjson",

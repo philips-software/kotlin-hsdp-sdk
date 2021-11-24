@@ -18,6 +18,7 @@ import okhttp3.mockwebserver.MockResponse
 import org.junit.jupiter.api.DynamicTest
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestFactory
+import java.util.*
 
 internal class ReadTest : CdrTestBase() {
 
@@ -48,6 +49,35 @@ internal class ReadTest : CdrTestBase() {
             "accept" to listOf("application/fhir+json; charset=UTF-8; fhirVersion=3.0"),
         )
         result shouldBe ReadResponse(200, """{"some":"value"}""", "abc", "2021-09-21T17:11:39Z")
+    }
+
+    @Test
+    fun `ModifiedSinceTimestamp value should be propagated to the request headers`(): Unit = runBlocking {
+        // Given
+        val timestamp = "2021-11-22T12:13:14Z"
+        server.enqueue(mockSuccessResponse)
+
+        // When
+        cdr.read(basicRequest.copy(modifiedSinceTimestamp = timestamp))
+
+        // Then
+        val request = server.takeRequest()
+        request.headers["If-Modified-Since"] shouldBe timestamp
+    }
+
+    @Test
+    fun `ModifiedSinceVersion value should be propagated to the request headers`(): Unit = runBlocking {
+        // Given
+        val versionId = UUID.randomUUID().toString()
+        val expectedETag = """W/"$versionId""""
+        server.enqueue(mockSuccessResponse)
+
+        // When
+        cdr.read(basicRequest.copy(modifiedSinceVersion = versionId))
+
+        // Then
+        val request = server.takeRequest()
+        request.headers["If-None-Match"] shouldBe expectedETag
     }
 
     @TestFactory

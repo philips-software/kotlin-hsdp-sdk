@@ -24,6 +24,16 @@ data class ReadRequest(
     val id: String,
 
     /**
+     * Indicates that a resource be returned only if modified from the given date/time.
+     */
+    val modifiedSinceTimestamp: String? = null,
+
+    /**
+     * Indicate that a resource be returned only if the resource had undergone changes since the given versionId.
+     */
+    val modifiedSinceVersion: String? = null,
+
+    /**
      * Optional parameter to choose the response MIME type for clients that cannot modify the 'Accept' header.
      * Overrides the value given in the 'Accept' header.
      */

@@ -4,12 +4,14 @@
  */
 package com.philips.hsdp.apis.cdr.domain.sdk
 
+import com.thinkinglogic.builder.annotation.Builder
 import kotlinx.serialization.Serializable
 
 /**
  * Data to be provided to a resource search.
  */
 @Serializable
+@Builder
 data class SearchRequest(
     /**
      * The logical grouping of resources for which to perform the search.

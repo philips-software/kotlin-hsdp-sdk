@@ -4,12 +4,14 @@
  */
 package com.philips.hsdp.apis.cdr.domain.sdk
 
+import com.thinkinglogic.builder.annotation.Builder
 import kotlinx.serialization.Serializable
 
 /**
  * Data to be provided to a resource creation request.
  */
 @Serializable
+@Builder
 data class CreateRequest(
     /**
      * Type of resource to create.

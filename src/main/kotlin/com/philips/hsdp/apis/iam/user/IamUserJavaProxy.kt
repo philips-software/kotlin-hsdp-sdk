@@ -6,7 +6,6 @@
 
 package com.philips.hsdp.apis.iam.user
 
-import com.philips.hsdp.apis.iam.user.domain.hsdp.OperationOutcome
 import com.philips.hsdp.apis.iam.user.domain.hsdp.PasswordPolicy
 import com.philips.hsdp.apis.iam.user.domain.sdk.*
 import com.philips.hsdp.apis.support.HttpClient

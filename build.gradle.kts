@@ -53,7 +53,7 @@ dependencies {
     implementation("com.thinkinglogic.builder:kotlin-builder-annotation:1.2.1")
     kapt("com.thinkinglogic.builder:kotlin-builder-processor:1.2.1")
 
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutineVersion")
     testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
     testImplementation("io.kotest:kotest-assertions-json:$kotestVersion")

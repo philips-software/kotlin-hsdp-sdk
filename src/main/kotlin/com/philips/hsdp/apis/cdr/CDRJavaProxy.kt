@@ -33,6 +33,11 @@ class CDRJavaProxy(cdrUrl: String, fhirVersion: String, mediaType: String, httpC
     fun create(createRequest: CreateRequest): CompletableFuture<CreateResponse> =
         scope.future { cdr.create(createRequest) }
 
+    fun createBatchOrTransaction(
+        batchOrTransactionRequest: BatchOrTransactionRequest
+    ): CompletableFuture<BatchOrTransactionResponse> =
+        scope.future { cdr.createBatchOrTransaction(batchOrTransactionRequest) }
+
     fun delete(deleteByIdRequest: DeleteByIdRequest): CompletableFuture<DeleteResponse> =
         scope.future { cdr.delete(deleteByIdRequest) }
 

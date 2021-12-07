@@ -60,6 +60,14 @@ class CDR(
         create(prepareRequest(createRequest))
 
     /**
+     * Create a new FHIR batch or transaction operation
+     */
+    suspend fun createBatchOrTransaction(
+        batchOrTransactionRequest: BatchOrTransactionRequest
+    ): BatchOrTransactionResponse =
+        createBatchOrTransaction(prepareRequest(batchOrTransactionRequest))
+
+    /**
      * Delete a FHIR resource by ID.
      */
     suspend fun delete(deleteByIdRequest: DeleteByIdRequest): DeleteResponse =
@@ -132,6 +140,16 @@ class CDR(
                     location = location,
                     versionId = toVersionId(eTag),
                     lastModified = toIso8601DateFormat(lastModified),
+                )
+            }
+        }
+
+    private suspend fun createBatchOrTransaction(request: Request): BatchOrTransactionResponse =
+        suspendCoroutine { continuation ->
+            httpClient.performRequest(request, continuation, logger) { response ->
+                BatchOrTransactionResponse(
+                    status = response.code,
+                    body = requireNotNull(response.body?.string()),
                 )
             }
         }
@@ -246,6 +264,19 @@ class CDR(
                 headerParameters = listOfNotNull(
                     validate?.let { HeaderParameter(xValidateResourceHeader, it.toString()) },
                     condition?.let { HeaderParameter(ifNoneExistsHeader, it) },
+                    preference?.let { HeaderParameter(preferHeader, "return=${it.value}") },
+                ),
+                queryParameters = listOfNotNull(format?.let { QueryParameter(formatQuery, it.value) })
+            )
+                .post(body.toRequestBody(versionedMediaType.toMediaTypeOrNull()))
+                .build()
+        }
+
+    private fun prepareRequest(batchOrTransactionRequest: BatchOrTransactionRequest): Request =
+        with(batchOrTransactionRequest) {
+            buildRequest(
+                pathSegments = "",
+                headerParameters = listOfNotNull(
                     preference?.let { HeaderParameter(preferHeader, "return=${it.value}") },
                 ),
                 queryParameters = listOfNotNull(format?.let { QueryParameter(formatQuery, it.value) })

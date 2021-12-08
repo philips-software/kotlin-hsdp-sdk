@@ -308,7 +308,7 @@ The current implementation covers only a subset of HSDP APIs. Additional functio
   - [x] Patch
   - [x] Delete
   - [ ] Get History
-  - [ ] Batch operation
+  - [x] Batch operation
   - [ ] Get Capabilities
 - [x] Telemetry Data Repository (TDR)
   - [x] Contracts

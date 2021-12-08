@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [v0.4.0] - 2021-12-08
+### Added
+- Implement CDR API for batch and transaction operations.
+### Changed
+- Update dependencies for junit-jupiter-engine and -api, kotest, kover, dokka
+
 ## [v0.3.0] - 2021-11-24
 ### Added
 - Implement CDR APIs for read, vread, create, update, patch and delete of FHIR resources.

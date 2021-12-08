@@ -4,10 +4,7 @@
  */
 package com.philips.hsdp.apis.cdr
 
-import com.philips.hsdp.apis.cdr.domain.sdk.CreateRequest
-import com.philips.hsdp.apis.cdr.domain.sdk.CreateResponse
-import com.philips.hsdp.apis.cdr.domain.sdk.FormatParameter
-import com.philips.hsdp.apis.cdr.domain.sdk.ReturnPreference
+import com.philips.hsdp.apis.cdr.domain.sdk.*
 import io.kotest.matchers.maps.shouldContainAll
 import io.kotest.matchers.nulls.beNull
 import io.kotest.matchers.should
@@ -19,20 +16,15 @@ import org.junit.jupiter.api.DynamicTest
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestFactory
 import org.junit.jupiter.api.TestInstance
-import java.util.*
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-internal class CreateTest : CdrTestBase() {
+internal class CreateTransactionTest : CdrTestBase() {
 
-    private val basicRequest = CreateRequest(
-        resourceType = "Patient",
+    private val basicRequest = BatchOrTransactionRequest(
         body = """{"key":"value"}""",
     )
     private val mockSuccessResponse = MockResponse()
         .setResponseCode(200)
-        .setHeader("Location", "location")
-        .setHeader("ETag", """W/"abc"""")
-        .setHeader("Last-Modified", "Tue, 21 Sep 2021 17:11:39 GMT")
         .setBody("""{"key":"value"}""")
 
     @Test
@@ -41,11 +33,11 @@ internal class CreateTest : CdrTestBase() {
         server.enqueue(mockSuccessResponse)
 
         // When
-        val result = cdr.create(basicRequest)
+        val result = cdr.createBatchOrTransaction(basicRequest)
 
         // Then
         val request = server.takeRequest()
-        request.requestUrl?.encodedPath shouldBe "/Patient"
+        request.requestUrl?.encodedPath shouldBe "/"
         request.requestUrl?.encodedQuery should beNull()
         request.method shouldBe "POST"
         request.headers.toMultimap() shouldContainAll mapOf(
@@ -54,27 +46,7 @@ internal class CreateTest : CdrTestBase() {
             "accept" to listOf("application/fhir+json; charset=UTF-8; fhirVersion=3.0"),
             "Content-Type" to listOf("application/fhir+json; charset=UTF-8; fhirVersion=3.0"),
         )
-        result shouldBe CreateResponse(200, """{"key":"value"}""", "location", "abc", "2021-09-21T17:11:39Z")
-    }
-
-    @TestFactory
-    fun `Validate value - if set - should be propagated to headers`() = listOf(
-        false to "false",
-        true to "true",
-    ).map { (validate, expectedHeaderValue) ->
-        DynamicTest.dynamicTest("Value $validate should lead to header parameter $expectedHeaderValue") {
-            runBlocking {
-                // Given
-                server.enqueue(mockSuccessResponse)
-
-                // When
-                cdr.create(basicRequest.copy(validate = validate))
-
-                // Then
-                val request = server.takeRequest()
-                request.headers["X-validate-resource"] shouldBe expectedHeaderValue
-            }
-        }
+        result shouldBe BatchOrTransactionResponse(200, """{"key":"value"}""")
     }
 
     @TestFactory
@@ -92,26 +64,13 @@ internal class CreateTest : CdrTestBase() {
                 server.enqueue(mockSuccessResponse)
 
                 // When
-                cdr.create(basicRequest.copy(format = format))
+                cdr.createBatchOrTransaction(basicRequest.copy(format = format))
 
                 // Then
                 val request = server.takeRequest()
                 request.requestUrl?.encodedQuery shouldContain expectedQueryParameter
             }
         }
-    }
-
-    @Test
-    fun `Condition value should be propagated to the request headers`(): Unit = runBlocking {
-        // Given
-        server.enqueue(mockSuccessResponse)
-
-        // When
-        cdr.create(basicRequest.copy(condition = "some.field=abc"))
-
-        // Then
-        val request = server.takeRequest()
-        request.headers["If-None-Exists"] shouldBe "some.field=abc"
     }
 
     @TestFactory
@@ -126,7 +85,7 @@ internal class CreateTest : CdrTestBase() {
                 server.enqueue(mockSuccessResponse)
 
                 // When
-                cdr.create(basicRequest.copy(preference = preference))
+                cdr.createBatchOrTransaction(basicRequest.copy(preference = preference))
 
                 // Then
                 val request = server.takeRequest()

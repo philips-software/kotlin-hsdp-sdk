@@ -16,7 +16,7 @@ repositories {
 }
 
 val okHttpVersion = "4.9.3"
-val kotestVersion = "5.0.1"
+val kotestVersion = "5.0.3"
 val coroutineVersion = "1.5.2-native-mt"
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {

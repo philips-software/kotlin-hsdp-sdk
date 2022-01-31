@@ -17,7 +17,7 @@ repositories {
 
 val okHttpVersion = "4.9.3"
 val kotestVersion = "5.0.1"
-val coroutineVersion = "1.5.2-native-mt"
+val coroutineVersion = "1.6.0-native-mt"
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
     kotlinOptions {
@@ -43,7 +43,7 @@ tasks.getByName<Test>("test") {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.6.0")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.6.10")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:$coroutineVersion")

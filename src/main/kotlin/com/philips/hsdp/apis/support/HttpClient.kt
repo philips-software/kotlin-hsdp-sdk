@@ -41,6 +41,9 @@ class HttpClient(callTimeout: Duration = Duration.ofSeconds(5)) : Authenticator 
     val client = OkHttpClient().newBuilder()
         .authenticator(this)
         .callTimeout(callTimeout)
+        .readTimeout(callTimeout)
+        .writeTimeout(callTimeout)
+        .connectTimeout(callTimeout)
         .build()
 
     /**

@@ -2,7 +2,7 @@ plugins {
     kotlin("jvm") version "1.6.21"
     kotlin("plugin.serialization") version "1.6.21"
     kotlin("kapt") version "1.6.21"
-    id("org.jetbrains.kotlinx.kover") version "0.5.0"
+    id("org.jetbrains.kotlinx.kover") version "0.5.1"
     id("org.jetbrains.dokka") version "1.6.21"
     id("org.sonarqube") version "3.3"
     jacoco

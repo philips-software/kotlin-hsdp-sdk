@@ -217,89 +217,62 @@ class IamOAuth2Test {
 
     @Nested
     inner class ServiceLogin : Setup() {
+        val exception = Exception("Resource not found")
+
         // Private key file in pkcs1-format was generated using command:
         // $ ssh-keygen -t rsa -b 4096 -o -a 100 -f src/test/resources/iam/oauth2/pkcs1-private.key.pem -m PEM < /dev/null
         // And generating a pkcs8-format file from that:
         // $ openssl pkcs8 -topk8 -inform pem -in src/test/resources/iam/oauth2/pkcs1-private.key.pem -outform PEM -nocrypt -out src/test/resources/iam/oauth2/pkcs8-private.key.pem
         // For generation of a pkcs8 private key we could also have used:
         // $ openssl genpkey -out src/test/resources/iam/oauth2/private8-via-genpkey.txt -outform PEM -algorithm RSA -pkeyopt rsa_keygen_bits:2048
-        @Test
-        fun `Should return a valid token when providing a valid private key in pkcs1 format and subject`(): Unit = runBlocking {
-            val privateKey =
-                javaClass.getResource("/iam/oauth2/pkcs1-private.key.pem")?.readText() ?: throw Exception("Resource not found")
-            // Given
-            val response = buildJsonObject {
-                put("scope", "auth_iam_introspect auth_iam_organization cn openid profile")
-                put("access_token", "22a34a6e-214c-4e3e-b85f-b4bbd1448613")
-                put("refresh_token", "")
-                put("expires_in", 1799)
-                put("token_type", "Bearer")
+        @TestFactory
+        fun `Should return a valid token when providing a valid private key in pkcs1 format and subject`() = listOf(
+            "pkcs1" to "/iam/oauth2/pkcs1-private.key.pem",
+            "pkcs8" to "/iam/oauth2/pkcs8-private.key.pem",
+        ).map { (format, fileName) ->
+            DynamicTest.dynamicTest("Format $format") {
+                runBlocking {
+                    val privateKey =
+                        javaClass.getResource(fileName)?.readText() ?: throw exception
+                    // Given
+                    val response = buildJsonObject {
+                        put("scope", "auth_iam_introspect auth_iam_organization cn openid profile")
+                        put("access_token", "22a34a6e-214c-4e3e-b85f-b4bbd1448613")
+                        put("refresh_token", "")
+                        put("expires_in", 1799)
+                        put("token_type", "Bearer")
+                    }
+
+                    val mockedResponse = MockResponse()
+                        .setResponseCode(200)
+                        .setBody(response.toString())
+
+                    server.enqueue(mockedResponse)
+
+                    // When
+                    val token = iamOAuth2.serviceLogin(privateKey, "issuer")
+
+                    // Then
+                    token.accessToken shouldBe "22a34a6e-214c-4e3e-b85f-b4bbd1448613"
+                    token.refreshToken shouldBe ""
+                    token.scopes shouldBe "auth_iam_introspect auth_iam_organization cn openid profile"
+                    token.tokenType shouldBe "Bearer"
+                    token.expiresIn shouldBe 1799
+
+                    // Then
+                    val request = server.takeRequest()
+                    request.requestUrl?.encodedPath shouldBe "/authorize/oauth2/token"
+                    request.method shouldBe "POST"
+                    request.body.toString() shouldContain "grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Ajwt-bearer"
+                }
             }
-
-            val mockedResponse = MockResponse()
-                .setResponseCode(200)
-                .setBody(response.toString())
-
-            server.enqueue(mockedResponse)
-
-            // When
-            val token = iamOAuth2.serviceLogin(privateKey, "issuer")
-
-            // Then
-            token.accessToken shouldBe "22a34a6e-214c-4e3e-b85f-b4bbd1448613"
-            token.refreshToken shouldBe ""
-            token.scopes shouldBe "auth_iam_introspect auth_iam_organization cn openid profile"
-            token.tokenType shouldBe "Bearer"
-            token.expiresIn shouldBe 1799
-
-            // Then
-            val request = server.takeRequest()
-            request.requestUrl?.encodedPath shouldBe "/authorize/oauth2/token"
-            request.method shouldBe "POST"
-            request.body.toString() shouldContain "grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Ajwt-bearer"
-        }
-
-        @Test
-        fun `Should return a valid token when providing a valid private key in pkcs8 format and subject`(): Unit = runBlocking {
-            val privateKey =
-                javaClass.getResource("/iam/oauth2/pkcs8-private.key.pem")?.readText() ?: throw Exception("Resource not found")
-            // Given
-            val response = buildJsonObject {
-                put("scope", "auth_iam_introspect auth_iam_organization cn openid profile")
-                put("access_token", "22a34a6e-214c-4e3e-b85f-b4bbd1448613")
-                put("refresh_token", "")
-                put("expires_in", 1799)
-                put("token_type", "Bearer")
-            }
-
-            val mockedResponse = MockResponse()
-                .setResponseCode(200)
-                .setBody(response.toString())
-
-            server.enqueue(mockedResponse)
-
-            // When
-            val token = iamOAuth2.serviceLogin(privateKey, "issuer")
-
-            // Then
-            token.accessToken shouldBe "22a34a6e-214c-4e3e-b85f-b4bbd1448613"
-            token.refreshToken shouldBe ""
-            token.scopes shouldBe "auth_iam_introspect auth_iam_organization cn openid profile"
-            token.tokenType shouldBe "Bearer"
-            token.expiresIn shouldBe 1799
-
-            // Then
-            val request = server.takeRequest()
-            request.requestUrl?.encodedPath shouldBe "/authorize/oauth2/token"
-            request.method shouldBe "POST"
-            request.body.toString() shouldContain "grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Ajwt-bearer"
         }
 
         @Test
         fun `Should throw an exception when providing a key with invalid pre and postfix`(): Unit = runBlocking {
             // Given
             val privateKey =
-                javaClass.getResource("/iam/oauth2/invalid.key")?.readText() ?: throw Exception("Resource not found")
+                javaClass.getResource("/iam/oauth2/invalid.key")?.readText() ?: throw exception
 
             // When
             shouldThrow<Exception> {

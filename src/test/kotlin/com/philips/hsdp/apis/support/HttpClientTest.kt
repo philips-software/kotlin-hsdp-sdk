@@ -19,12 +19,16 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 
+@Suppress("S100") // Disable function name rule for tests
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 internal class HttpClientTest {
 
     private val token: Token = mockk()
     private val tokenRefresher: TokenRefresher = mockk()
     private val httpClient: HttpClient = HttpClient()
+    private val bearerAccessToken = "Bearer accessToken"
+    private val anAccessToken = "an access token value"
+    private val anotherAccessToken = "another access token value"
 
     @BeforeAll
     fun setup() {
@@ -61,40 +65,41 @@ internal class HttpClientTest {
     @Test
     fun `Use current access token when not expired`() {
         // Given
-        val request: Request = createRequest().header("Authorization", "Bearer accessToken").build()
+        val request: Request = createRequest().header("Authorization", bearerAccessToken).build()
         val response: Response = createResponse().request(request).build()
         every { tokenRefresher.token } returns token
-        every { token.accessToken } returns "some test"
+        every { token.accessToken } returns anAccessToken
         every { token.isExpired } returns false
         // When
         val result: Request? = httpClient.authenticate(null, response)
         // Then
-        result?.header("Authorization") shouldBe "Bearer some test"
+        result?.header("Authorization") shouldBe "Bearer $anAccessToken"
     }
+
 
     @Test
     fun `refresh access token when expired and a refresh token is available`() {
         // Given
-        val request: Request = createRequest().header("Authorization", "Bearer accessToken").build()
+        val request: Request = createRequest().header("Authorization", bearerAccessToken).build()
         val response: Response = createResponse().request(request).build()
         every { tokenRefresher.token } returns token
-        every { token.accessToken } returns "some test" andThen "another token"
+        every { token.accessToken } returns anAccessToken andThen anotherAccessToken
         every { token.isExpired } returns true
         every { token.refreshToken } returns "some refresh token"
         coEvery { tokenRefresher.refreshToken() } returns token
         // When
         val result: Request? = httpClient.authenticate(null, response)
         // Then
-        result?.header("Authorization") shouldBe "Bearer another token"
+        result?.header("Authorization") shouldBe "Bearer $anotherAccessToken"
     }
 
     @Test
     fun `skip refreshing access token when expired and there is no refresh token, eg for service login`() {
         // Given
-        val request: Request = createRequest().header("Authorization", "Bearer accessToken").build()
+        val request: Request = createRequest().header("Authorization", bearerAccessToken).build()
         val response: Response = createResponse().request(request).build()
         every { tokenRefresher.token } returns token
-        every { token.accessToken } returns "some test" andThen "another token"
+        every { token.accessToken } returns anAccessToken andThen anotherAccessToken
         every { token.isExpired } returns true
         every { token.refreshToken } returns ""
         coEvery { tokenRefresher.refreshToken() } returns token

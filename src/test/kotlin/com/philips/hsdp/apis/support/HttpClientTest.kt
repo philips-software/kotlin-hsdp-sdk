@@ -5,6 +5,8 @@
 package com.philips.hsdp.apis.support
 
 import com.philips.hsdp.apis.iam.oauth2.domain.sdk.Token
+import io.kotest.matchers.nulls.beNull
+import io.kotest.matchers.should
 import io.kotest.matchers.shouldBe
 /* ktlint-disable no-wildcard-imports */
 import io.mockk.*
@@ -71,18 +73,35 @@ internal class HttpClientTest {
     }
 
     @Test
-    fun `refresh access token when expired`() {
+    fun `refresh access token when expired and a refresh token is available`() {
         // Given
         val request: Request = createRequest().header("Authorization", "Bearer accessToken").build()
         val response: Response = createResponse().request(request).build()
         every { tokenRefresher.token } returns token
         every { token.accessToken } returns "some test" andThen "another token"
         every { token.isExpired } returns true
+        every { token.refreshToken } returns "some refresh token"
         coEvery { tokenRefresher.refreshToken() } returns token
         // When
         val result: Request? = httpClient.authenticate(null, response)
         // Then
         result?.header("Authorization") shouldBe "Bearer another token"
+    }
+
+    @Test
+    fun `skip refreshing access token when expired and there is no refresh token, eg for service login`() {
+        // Given
+        val request: Request = createRequest().header("Authorization", "Bearer accessToken").build()
+        val response: Response = createResponse().request(request).build()
+        every { tokenRefresher.token } returns token
+        every { token.accessToken } returns "some test" andThen "another token"
+        every { token.isExpired } returns true
+        every { token.refreshToken } returns ""
+        coEvery { tokenRefresher.refreshToken() } returns token
+        // When
+        val result: Request? = httpClient.authenticate(null, response)
+        // Then
+        result should beNull()
     }
 
     private fun createResponse(): Response.Builder {

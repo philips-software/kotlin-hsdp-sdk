@@ -48,8 +48,9 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:$coroutineVersion")
     implementation("com.squareup.okhttp3:okhttp:$okHttpVersion")
-    implementation("io.jsonwebtoken:jjwt:0.9.1")
-//    implementation("io.jsonwebtoken:jjwt:0.11.5")
+    compileOnly("io.jsonwebtoken:jjwt-api:0.11.5")
+    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
+    runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
 
     implementation("com.thinkinglogic.builder:kotlin-builder-annotation:1.2.1")
     kapt("com.thinkinglogic.builder:kotlin-builder-processor:1.2.1")

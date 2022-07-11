@@ -214,7 +214,7 @@ class IamOAuth2(
     private fun createJWT(secret: String, issuer: String, subject: String, ttlMillis: Long): String {
         val privateKeyFromString = PrivateKeyReader(secret).read()
         return Jwts.builder()
-            .signWith(SignatureAlgorithm.RS256, privateKeyFromString)
+            .signWith(privateKeyFromString, SignatureAlgorithm.RS256)
             .setAudience("$iamUrl/oauth2/access_token")
             .setExpiration(Date(Calendar.getInstance().time.time + ttlMillis))
             .setIssuer(issuer)

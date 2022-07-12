@@ -7,6 +7,27 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [v0.4.4] - 2022-07-11
+### Changed
+- Fix timestamp parsing from LastModified header (TDR, CDR)
+- In HttpClient.authenticate only try to refresh a token when there is a refresh token (service logins don't have one)
+- Upgrade dependencies
+### Fixed
+- Service login (support PKCS1 private keys)
+
+## [v0.4.3] - 2022-05-02
+### Changed
+- Upgrade more dependencies
+
+## [v0.4.2] - 2022-05-02
+### Changed
+- Upgrade dependencies (to fix Dependabot issues)
+
+## [v0.4.1] - 2022-02-07
+### Changed
+- Make callTimeout leading and set the other timeouts for OkHttpClient to the same value.
+- Upgrade dependencies (to fix Dependabot issues)
+
 ## [v0.4.0] - 2021-12-08
 ### Added
 - Implement CDR API for batch and transaction operations.

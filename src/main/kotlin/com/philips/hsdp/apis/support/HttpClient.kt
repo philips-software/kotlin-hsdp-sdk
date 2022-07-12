@@ -51,8 +51,6 @@ class HttpClient(callTimeout: Duration = Duration.ofSeconds(5)) : Authenticator 
      * again.
      */
     override fun authenticate(route: Route?, response: Response): Request? {
-//        Timber.i("Authenticator called")
-
         if (!isRequestWithAccessToken(response)) {
             return null
         }
@@ -67,16 +65,22 @@ class HttpClient(callTimeout: Duration = Duration.ofSeconds(5)) : Authenticator 
                 val tokenToUse = if (accessToken != currentAccessToken && !it.token.isExpired) {
                     currentAccessToken
                 } else {
-                    // Otherwise, we need to refresh the access token
-                    runBlocking {
-                        it.refreshToken()
+                    // Otherwise, we need to refresh the access token (if we have a refresh token)
+                    if (token.refreshToken.isNotEmpty()) {
+                        runBlocking {
+                            it.refreshToken()
+                        }
+                        it.token.accessToken
+                    } else {
+                        null
                     }
-                    it.token.accessToken
                 }
 
-                response.request.newBuilder()
-                    .header("Authorization", "Bearer $tokenToUse")
-                    .build()
+                tokenToUse?.let {
+                    response.request.newBuilder()
+                        .header("Authorization", "Bearer $tokenToUse")
+                        .build()
+                }
             }
         }
     }

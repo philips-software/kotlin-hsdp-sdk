@@ -420,7 +420,7 @@ class CDR(
      * (for consistency with other places where a timestamp is used).
      */
     private fun toIso8601DateFormat(timestamp: String): String {
-        val date = LocalDateTime.parse(timestamp, DateTimeFormatter.ofPattern("EEE, dd LLL yyyy HH:mm:ss 'GMT'"))
+        val date = LocalDateTime.parse(timestamp, DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss 'GMT'"))
         return date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'"))
     }
 

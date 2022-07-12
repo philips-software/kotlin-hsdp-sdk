@@ -267,7 +267,7 @@ internal class TDRTest {
                 "accept" to listOf("application/json; charset=utf-8"),
             )
             exception.code shouldBe 500
-            exception.message shouldStartWith "Unexpected JSON token at offset 2: Encountered an unknown key 'invalid'."
+            exception.message shouldStartWith "Unexpected JSON token at offset 2: Encountered an unknown key 'invalid'"
         }
 
         @Test
@@ -919,7 +919,7 @@ internal class TDRTest {
                 "accept" to listOf("application/json; charset=utf-8"),
             )
             exception.code shouldBe 500
-            exception.message shouldStartWith "Unexpected JSON token at offset 2: Encountered an unknown key 'invalid'."
+            exception.message shouldStartWith "Unexpected JSON token at offset 2: Encountered an unknown key 'invalid'"
         }
     }
 }

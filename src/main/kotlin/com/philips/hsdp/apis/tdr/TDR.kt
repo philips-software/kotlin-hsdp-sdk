@@ -301,7 +301,7 @@ class TDR(private val tdrUrl: String, private val httpClient: HttpClient) {
      * (for consistency with other places where a timestamp is used).
      */
     private fun toIso8601DateFormat(timestamp: String): String {
-        val date = LocalDateTime.parse(timestamp, DateTimeFormatter.ofPattern("EEE, dd LLL yyyy HH:mm:ss 'UTC'"))
+        val date = LocalDateTime.parse(timestamp, DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss 'UTC'"))
         return date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'"))
     }
 }

@@ -15,6 +15,7 @@ import com.philips.hsdp.apis.iam.oauth2.domain.sdk.TokenMetadata
 import com.philips.hsdp.apis.iam.oauth2.domain.sdk.UserInfo
 import com.philips.hsdp.apis.support.HttpClient
 import com.philips.hsdp.apis.support.HttpException
+import com.philips.hsdp.apis.support.PrivateKeyReader
 import com.philips.hsdp.apis.support.TokenRefresher
 import com.philips.hsdp.apis.support.logging.PlatformLoggerFactory
 import io.jsonwebtoken.Jwts
@@ -27,10 +28,6 @@ import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.Request
 import okhttp3.RequestBody
 import java.io.IOException
-import java.security.GeneralSecurityException
-import java.security.KeyFactory
-import java.security.interfaces.RSAPrivateKey
-import java.security.spec.PKCS8EncodedKeySpec
 import java.util.Base64
 import java.util.Calendar
 import java.util.Date
@@ -215,24 +212,14 @@ class IamOAuth2(
         }
 
     private fun createJWT(secret: String, issuer: String, subject: String, ttlMillis: Long): String {
+        val privateKeyFromString = PrivateKeyReader(secret).read()
         return Jwts.builder()
-            .signWith(SignatureAlgorithm.RS256, getPrivateKeyFromString(secret))
-            .setAudience(iamUrl + "oauth2/access_token")
+            .signWith(privateKeyFromString, SignatureAlgorithm.RS256)
+            .setAudience("$iamUrl/oauth2/access_token")
             .setExpiration(Date(Calendar.getInstance().time.time + ttlMillis))
             .setIssuer(issuer)
             .setSubject(subject)
             .compact()
-    }
-
-    @Throws(IOException::class, GeneralSecurityException::class)
-    private fun getPrivateKeyFromString(key: String): RSAPrivateKey {
-        val privateKeyPEM = key
-            .replace("-----BEGIN RSA PRIVATE KEY-----\n", "")
-            .replace("\n-----END RSA PRIVATE KEY-----", "")
-        val encoded: ByteArray = Base64.getDecoder().decode(privateKeyPEM)
-        val keyFactory = KeyFactory.getInstance("RSA")
-        val keySpec = PKCS8EncodedKeySpec(encoded)
-        return keyFactory.generatePrivate(keySpec) as RSAPrivateKey
     }
 
     /**

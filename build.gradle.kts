@@ -59,7 +59,7 @@ dependencies {
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutineVersion")
     testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
     testImplementation("io.kotest:kotest-assertions-json:$kotestVersion")
-    testImplementation("io.mockk:mockk:1.12.4")
+    testImplementation("io.mockk:mockk:1.13.2")
     testImplementation("com.squareup.okhttp3:mockwebserver:$okHttpVersion")
 
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.2")

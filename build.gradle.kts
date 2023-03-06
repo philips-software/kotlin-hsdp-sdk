@@ -3,7 +3,7 @@ plugins {
     kotlin("plugin.serialization") version "1.7.10"
     kotlin("kapt") version "1.7.10"
     id("org.jetbrains.kotlinx.kover") version "0.5.1"
-    id("org.jetbrains.dokka") version "1.7.0"
+    id("org.jetbrains.dokka") version "1.8.10"
     id("org.sonarqube") version "3.3"
     jacoco
     id("com.github.hierynomus.license") version "0.16.1"

@@ -4,7 +4,7 @@ plugins {
     kotlin("kapt") version "1.7.10"
     id("org.jetbrains.kotlinx.kover") version "0.5.1"
     id("org.jetbrains.dokka") version "1.7.0"
-    id("org.sonarqube") version "3.3"
+    id("org.sonarqube") version "4.2.0.3129"
     jacoco
     id("com.github.hierynomus.license") version "0.16.1"
     `java-library`
